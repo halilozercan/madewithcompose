@@ -13,16 +13,16 @@ is always tested.
 
 # Video Player
 
-![This is a Youtube like Video Player App that is completely written in #JetpackCompose using good old #ExoPlayer. IMO, It nicely demonstrates the smooth interoperability with the existing Android Views.](https://twitter.com/halilozercan/status/1372635576416006146)
+[This is a Youtube like Video Player App that is completely written in #JetpackCompose using good old #ExoPlayer. IMO, It nicely demonstrates the smooth interoperability with the existing Android Views.](https://twitter.com/halilozercan/status/1372635576416006146)
 
 # Dots And Lines
 
-![Made this animation as a background modifier in #JetpackCompose a while ago. So fun to just watch the dots travel, bond connections again and again. The responsiveness of canvas to configuration options is outstanding. Great work by the compose team](https://twitter.com/halilozercan/status/1371197797400207368)
+[Made this animation as a background modifier in #JetpackCompose a while ago. So fun to just watch the dots travel, bond connections again and again. The responsiveness of canvas to configuration options is outstanding. Great work by the compose team](https://twitter.com/halilozercan/status/1371197797400207368)
 
 # Schedule Calendar
 
-![Made this on-call schedule calendar with #JetpackCompose. RecyclerView & PageSnapHelper & Decorators & Multiple hacks for ripple & Text Drawing with more hacks VS one swipeable boi](https://twitter.com/halilozercan/status/1395862026073817089)
+[Made this on-call schedule calendar with #JetpackCompose. RecyclerView & PageSnapHelper & Decorators & Multiple hacks for ripple & Text Drawing with more hacks VS one swipeable boi](https://twitter.com/halilozercan/status/1395862026073817089)
 
 # Calendar
 
-![Implemented this calendar under 200 LoC using #JetpackCompose for Desktop (copy&paste for Android support 🙃). It wasn't so long ago that we had to use a 3rd party library to have this kind of functionality in our app.](https://twitter.com/halilozercan/status/1382432402325262338)
+[Implemented this calendar under 200 LoC using #JetpackCompose for Desktop (copy&paste for Android support 🙃). It wasn't so long ago that we had to use a 3rd party library to have this kind of functionality in our app.](https://twitter.com/halilozercan/status/1382432402325262338)
