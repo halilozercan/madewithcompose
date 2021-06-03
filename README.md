@@ -26,3 +26,7 @@ is always tested.
 # Calendar
 
 ![Implemented this calendar under 200 LoC using #JetpackCompose for Desktop (copy&paste for Android support 🙃). It wasn't so long ago that we had to use a 3rd party library to have this kind of functionality in our app.](https://twitter.com/halilozercan/status/1382432402325262338)
+
+# Circles On Lines
+
+![I knew I had to try this out as soon as I saw it on Reddit. Although I couldn't get the math exactly right, it still looks fine.](https://twitter.com/halilozercan/status/1400202985335148550)

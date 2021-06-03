@@ -21,6 +21,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.halilibo.madewithcompose.calendar.CalendarDemo
+import com.halilibo.madewithcompose.circlesonlines.CirclesOnLinesDemo
 import com.halilibo.madewithcompose.dotsandlines.DotsAndLinesDemo
 import com.halilibo.madewithcompose.schedulecalendar.ScheduleCalendarDemo
 import com.halilibo.madewithcompose.ui.theme.MadeWithComposeTheme
@@ -94,6 +95,13 @@ enum class Demo(
         "calendar",
         @Composable {
             CalendarDemo()
+        }
+    ),
+    CirclesOnLines(
+        "Circles on Lines",
+        "circlesonlines",
+        @Composable {
+            CirclesOnLinesDemo()
         }
     )
 }
