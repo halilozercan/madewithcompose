@@ -1,7 +1,6 @@
 package com.halilibo.dotsandlines
 
 import android.os.Parcelable
-import android.util.Log
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.IntSize
 import kotlinx.parcelize.Parcelize
@@ -33,21 +32,14 @@ data class Dot(
             borders: IntSize,
             durationMillis: Long,
             dotRadius: Float,
-            speedCoefficient: Float,
-            gravity: Offset? = null
+            speedCoefficient: Float
         ): Dot {
             val speed = vector * speedCoefficient
 
-            // A vector that starts from current position and targets [gravity]
-            val gravitationalVector = gravity?.let {
-                Log.d("Gravity", "${Offset(x = it.x - position.x, y = it.y - position.y)}")
-                Offset(x = it.x - position.x, y = it.y - position.y).normalize() * 100f * speedCoefficient
-            } ?: Offset.Zero
-
             return Dot(
                 position = position + Offset(
-                    x = (speed.x + gravitationalVector.x) / 1000f * durationMillis,
-                    y = (speed.y + gravitationalVector.y) / 1000f * durationMillis,
+                    x = speed.x / 1000f * durationMillis,
+                    y = speed.y / 1000f * durationMillis,
                 ),
                 vector = vector
             ).let { (position, vector) ->

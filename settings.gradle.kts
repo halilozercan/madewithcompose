@@ -11,5 +11,6 @@ include(":videoplayer")
 include(":schedulecalendar")
 include(":dotsandlines")
 include(":calendar")
+include(":weightentry")
 
 include(":colors")

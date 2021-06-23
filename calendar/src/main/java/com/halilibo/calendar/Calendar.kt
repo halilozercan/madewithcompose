@@ -13,19 +13,23 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.lerp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
 import com.halilibo.colors.N100
 import kotlinx.coroutines.flow.collect
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -64,9 +68,10 @@ fun Calendar(
 
     HorizontalPager(
         state = pagerState,
-        modifier = modifier.background(MaterialTheme.colors.surface)
+        modifier = modifier.background(MaterialTheme.colors.surface),
+        verticalAlignment = Alignment.Top
     ) { index ->
-        with (calendarScope) {
+        with(calendarScope) {
             CalendarPage(
                 monthIndex = index,
                 onDayClick = {
@@ -75,7 +80,30 @@ fun Calendar(
                 },
                 selectedDay = selectedDay,
                 today = today,
-                events = events
+                events = events,
+                modifier = Modifier.graphicsLayer {
+                    // Calculate the absolute offset for the current page from the
+                    // scroll position. We use the absolute value which allows us to mirror
+                    // any effects for both directions
+                    val pageOffset = calculateCurrentOffsetForPage(index).absoluteValue
+
+                    // We animate the scaleX + scaleY, between 85% and 100%
+                    lerp(
+                        start = 0.85f,
+                        stop = 1f,
+                        fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                    ).also { scale ->
+                        scaleX = scale
+                        scaleY = scale
+                    }
+
+                    // We animate the alpha, between 50% and 100%
+                    alpha = lerp(
+                        start = 0.5f,
+                        stop = 1f,
+                        fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                    )
+                }
             )
         }
     }
@@ -87,42 +115,46 @@ private fun CalendarScope.CalendarPage(
     onDayClick: (CalendarDay) -> Unit,
     selectedDay: CalendarDay,
     today: CalendarDay,
-    events: Set<CalendarEvent>
+    events: Set<CalendarEvent>,
+    modifier: Modifier = Modifier
 ) {
     val daysInMonth = remember(monthIndex) { getDaysInMonth(monthIndex) }
     val daysOfWeek = remember { daysOfWeek("EEE") }
 
-    Layout(content = {
-        daysOfWeek.forEach { dayOfWeek ->
-            Text(
-                text = dayOfWeek.take(1).toUpperCase(),
-                fontSize = 12.sp,
-                color = N100,
-                lineHeight = 16.sp,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(vertical = 8.dp)
-            )
-        }
+    Layout(
+        modifier = modifier,
+        content = {
+            daysOfWeek.forEach { dayOfWeek ->
+                Text(
+                    text = dayOfWeek.take(1).toUpperCase(),
+                    fontSize = 12.sp,
+                    color = N100,
+                    lineHeight = 16.sp,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
+            }
 
-        daysInMonth.forEach { (calendarDay, dayOfWeek) ->
-            val isInCurrentMonth = monthIndex == calendarDay.monthIndex
-            CalendarDayView(
-                number = calendarDay.day,
-                isSelected = calendarDay == selectedDay,
-                isToday = calendarDay == today,
-                events = events.filterByDay(calendarDay).toSet(),
-                modifier = Modifier
-                    .padding(vertical = 2.dp)
-                    .alpha(if (isInCurrentMonth) 1f else 0f)
-                    .clickable(
-                        indication = null,
-                        interactionSource = remember { MutableInteractionSource() }
-                    ) {
-                        onDayClick(calendarDay)
-                    }
-            )
+            daysInMonth.forEach { (calendarDay, dayOfWeek) ->
+                val isInCurrentMonth = monthIndex == calendarDay.monthIndex
+                CalendarDayView(
+                    number = calendarDay.day,
+                    isSelected = calendarDay == selectedDay,
+                    isToday = calendarDay == today,
+                    events = events.filterByDay(calendarDay).toSet(),
+                    modifier = Modifier
+                        .padding(vertical = 2.dp)
+                        .alpha(if (isInCurrentMonth) 1f else 0f)
+                        .clickable(
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() }
+                        ) {
+                            onDayClick(calendarDay)
+                        }
+                )
+            }
         }
-    }) { measurables, constraints ->
+    ) { measurables, constraints ->
         val measurablesByWeek = measurables.chunked(7)
         val placeables = measurablesByWeek.map { weekOfMeasurables ->
             weekOfMeasurables.map { measurable ->
@@ -235,8 +267,8 @@ private fun CalendarScope.getDaysInMonth(monthIndex: Int): List<Pair<CalendarDay
         CalendarDay(day = 1, month = monthIndex % 12, year = monthIndex / 12).toCalendar()
     calendar.goBackToFirstFirstDayOfWeek()
     return buildList {
-        while(calendar.get(Calendar.MONTH) <= monthIndex % 12) {
-            repeat(7) {
+        repeat(6) { // 6 weeks at least to show a month
+            repeat(7) { // 7 days every week
                 add(calendar.toCalendarDay() to calendar.get(Calendar.DAY_OF_WEEK))
                 calendar.add(Calendar.DATE, 1)
             }

@@ -1,7 +1,6 @@
 plugins {
     id("com.android.library")
     id("kotlin-android")
-    id("kotlin-parcelize")
 }
 
 android {
@@ -45,8 +44,9 @@ android {
 dependencies {
     implementation(project(":colors"))
     implementation(Compose.ui)
-    implementation(Compose.uiUtil)
     implementation(Compose.material)
     implementation(Compose.uiTooling)
+    implementation(Compose.iconsExtended)
+    implementation(Compose.activity)
     implementation(Accompanist.pager)
 }

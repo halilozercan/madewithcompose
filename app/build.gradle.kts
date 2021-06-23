@@ -50,6 +50,7 @@ dependencies {
   implementation(project(":schedulecalendar"))
   implementation(project(":dotsandlines"))
   implementation(project(":calendar"))
+  implementation(project(":weightentry"))
   implementation(project(":colors"))
 
   implementation("com.google.android.material:material:1.3.0")

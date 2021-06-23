@@ -5,12 +5,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -24,8 +25,10 @@ import com.halilibo.madewithcompose.calendar.CalendarDemo
 import com.halilibo.madewithcompose.circlesonlines.CirclesOnLinesDemo
 import com.halilibo.madewithcompose.dotsandlines.DotsAndLinesDemo
 import com.halilibo.madewithcompose.schedulecalendar.ScheduleCalendarDemo
+import com.halilibo.madewithcompose.ui.theme.LocalNightMode
 import com.halilibo.madewithcompose.ui.theme.MadeWithComposeTheme
 import com.halilibo.madewithcompose.videoplayer.VideoPlayerDemo
+import com.halilibo.madewithcompose.weightentry.WeightEntryDemo
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalAnimationApi::class)
@@ -42,6 +45,20 @@ class MainActivity : ComponentActivity() {
                         TopAppBar(
                             title = {
                                 Text(text = currentRouteTitle ?: "Home")
+                            },
+                            actions = {
+                                val nightMode = LocalNightMode.current
+                                Icon(Icons.Default.LightMode, contentDescription = "")
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Switch(
+                                    checked = nightMode.isNight,
+                                    onCheckedChange = { isNight ->
+                                        if (isNight) nightMode.setNight() else nightMode.setDay()
+                                    }
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Icon(Icons.Default.DarkMode, contentDescription = "")
+                                Spacer(modifier = Modifier.width(16.dp))
                             }
                         )
                     }
@@ -102,6 +119,13 @@ enum class Demo(
         "circlesonlines",
         @Composable {
             CirclesOnLinesDemo()
+        }
+    ),
+    WeightEntry(
+        "Weight Entry",
+        "weightentry",
+        @Composable {
+            WeightEntryDemo()
         }
     )
 }

@@ -1,7 +1,6 @@
 package com.halilibo.dotsandlines
 
 import android.os.Parcelable
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.IntSize
 import com.halilibo.dotsandlines.Dot.Companion.next
 import kotlinx.parcelize.Parcelize
@@ -30,10 +29,10 @@ data class DotsAndLinesState(
             )
         }
 
-        fun DotsAndLinesState.next(durationMillis: Long, gravity: Offset? = null): DotsAndLinesState {
+        fun DotsAndLinesState.next(durationMillis: Long): DotsAndLinesState {
             return copy(
                 dots = dots.map {
-                    it.next(size, durationMillis, dotRadius, speed, gravity)
+                    it.next(size, durationMillis, dotRadius, speed)
                 }
             )
         }
