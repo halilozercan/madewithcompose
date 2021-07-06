@@ -30,3 +30,7 @@ is always tested.
 # Circles On Lines
 
 [I knew I had to try this out as soon as I saw it on Reddit. Although I couldn't get the math exactly right, it still looks fine.](https://twitter.com/halilozercan/status/1400202985335148550)
+
+# Weight Entry
+
+[My last experiment with #JetpackCompose, a weight entry view. No LazyRow or anything. Just a simple Animatable float and draggable modifiers.](https://twitter.com/halilozercan/status/1408437121858392064)
