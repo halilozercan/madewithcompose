@@ -57,6 +57,9 @@ class MinimizeLayoutState(
         hiddenOffset.animateTo(1f)
     }
 
+    val isHidden: Boolean
+        get() = hiddenOffset.value == 1f
+
     // There is a bug in swipeableState.progress in which an exception
     // is thrown when progress reaches completion
     val swipeProgress: SwipeProgress<MinimizeLayoutValue>

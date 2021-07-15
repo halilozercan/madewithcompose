@@ -34,14 +34,12 @@ android {
   }
   kotlinOptions {
     jvmTarget = "1.8"
-    useIR = true
   }
   buildFeatures {
     compose = true
   }
   composeOptions {
     kotlinCompilerExtensionVersion = Compose.version
-    kotlinCompilerVersion = kotlinVersion
   }
 }
 
@@ -53,7 +51,7 @@ dependencies {
   implementation(project(":weightentry"))
   implementation(project(":colors"))
 
-  implementation("com.google.android.material:material:1.3.0")
+  implementation("com.google.android.material:material:1.4.0")
   implementation(Compose.ui)
   implementation(Compose.material)
   implementation(Compose.uiTooling)
@@ -65,8 +63,8 @@ dependencies {
   implementation("com.google.code.gson:gson:2.8.6")
   implementation("androidx.lifecycle:lifecycle-common-java8:2.3.1")
   testImplementation("junit:junit:4.13.2")
-  androidTestImplementation("androidx.test.ext:junit:1.1.2")
-  androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
+  androidTestImplementation("androidx.test.ext:junit:1.1.3")
+  androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
   androidTestImplementation(Compose.testing)
   coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
 }

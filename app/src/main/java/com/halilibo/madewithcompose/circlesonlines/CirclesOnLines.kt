@@ -1,6 +1,5 @@
 package com.halilibo.madewithcompose.circlesonlines
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.animateFloatAsState
@@ -24,7 +23,6 @@ import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun CirclesOnLinesDemo() {
     var isStarted by remember { mutableStateOf(false) }
@@ -32,7 +30,6 @@ fun CirclesOnLinesDemo() {
     Column(
         Modifier
             .fillMaxSize()
-            .background(Color.Black)
             .padding(16.dp)) {
         Row {
             if (!isStarted) {

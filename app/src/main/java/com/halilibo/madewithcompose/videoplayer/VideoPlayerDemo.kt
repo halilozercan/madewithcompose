@@ -3,7 +3,9 @@ package com.halilibo.madewithcompose.videoplayer
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
@@ -21,13 +23,15 @@ import com.halilibo.madewithcompose.R
 import com.halilibo.videoplayer.VideoPlayer
 import com.halilibo.videoplayer.VideoPlayerSource
 import com.halilibo.videoplayer.rememberVideoPlayerController
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun VideoPlayerDemo() {
-    var selectedVideoState by rememberSaveable { mutableStateOf<Video?>(null) }
+    var selectedVideo by rememberSaveable { mutableStateOf<Video?>(null) }
 
+    val coroutineScope = rememberCoroutineScope()
     val videoPlayerController = rememberVideoPlayerController()
     val videoPlayerUiState by videoPlayerController.state.collectAsState()
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -46,20 +50,23 @@ fun VideoPlayerDemo() {
     }
 
     val minimizeLayoutState = rememberMinimizeLayoutState(MinimizeLayoutValue.Expanded)
-    LaunchedEffect(selectedVideoState) {
-        val selectedVideo = selectedVideoState
-        if (selectedVideo != null) {
-            videoPlayerController.setSource(VideoPlayerSource.Network(selectedVideo.sources.first()))
-            minimizeLayoutState.expand()
-        } else {
-            minimizeLayoutState.hide()
-            videoPlayerController.reset()
+
+    val selectedVideoFlow = remember { snapshotFlow { selectedVideo } }
+    LaunchedEffect(Unit) {
+        selectedVideoFlow.collect { video ->
+            if (video != null) {
+                videoPlayerController.setSource(VideoPlayerSource.Network(video.sources.first()))
+                minimizeLayoutState.expand()
+            } else {
+                minimizeLayoutState.hide()
+                videoPlayerController.reset()
+            }
         }
     }
 
-    val coroutineScope = rememberCoroutineScope()
     val isFullyMaximized = minimizeLayoutState.currentValue == MinimizeLayoutValue.Expanded &&
-        minimizeLayoutState.targetValue != MinimizeLayoutValue.Minimized
+        minimizeLayoutState.targetValue != MinimizeLayoutValue.Minimized &&
+        !minimizeLayoutState.isHidden
 
     BackHandler(
         onBack = {
@@ -72,8 +79,8 @@ fun VideoPlayerDemo() {
         minimizeLayoutState = minimizeLayoutState,
         minimizedContentHeight = { 60.dp },
         minimizableContent = { swipeable ->
-            val videoTitle = selectedVideoState?.title ?: ""
-            val videoDescription = selectedVideoState?.description ?: ""
+            val videoTitle = selectedVideo?.title ?: ""
+            val videoDescription = selectedVideo?.description ?: ""
 
             VideoPlayerPage(
                 videoPlayer = {
@@ -94,7 +101,7 @@ fun VideoPlayerDemo() {
                         modifier = Modifier
                             .padding(16.dp)
                             .clickable {
-                                selectedVideoState = null
+                                selectedVideo = null
                             }
                     )
                     Text(
@@ -110,7 +117,7 @@ fun VideoPlayerDemo() {
                         videoTitle = videoTitle,
                         isPlaying = videoPlayerUiState.isPlaying,
                         onPlayPauseToggle = { videoPlayerController.playPauseToggle() },
-                        onDismiss = { selectedVideoState = null },
+                        onDismiss = { selectedVideo = null },
                         modifier = Modifier.then(swipeable)
                     )
                 },
@@ -122,7 +129,7 @@ fun VideoPlayerDemo() {
         Surface {
             VideoListPage(
                 onVideoSelected = { video ->
-                    selectedVideoState = video
+                    selectedVideo = video
                 },
                 contentPadding = paddingValues
             )
