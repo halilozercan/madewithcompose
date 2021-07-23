@@ -22,12 +22,23 @@ object Compose {
 }
 
 object Accompanist {
-    private const val version = "0.14.0"
+    private const val version = "0.16.0"
     const val pager = "com.google.accompanist:accompanist-pager:$version"
-    const val coil = "com.google.accompanist:accompanist-coil:$version"
+    const val insets = "com.google.accompanist:accompanist-insets:$version"
+}
+
+object Libraries {
+    const val coil = "io.coil-kt:coil-compose:1.3.2"
 }
 
 object BuildPlugins {
     const val androidGradlePlugin = "com.android.tools.build:gradle:7.1.0-alpha06"
     const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
+}
+
+object RichText {
+    private const val version = "0.6.1-SNAPSHOT"
+    const val material = "com.halilibo.compose-richtext:richtext-ui-material:$version"
+    const val markdown = "com.halilibo.compose-richtext:richtext-commonmark:$version"
+    const val printing = "com.halilibo.compose-richtext:printing:$version"
 }

@@ -7,6 +7,7 @@ import com.halilibo.madewithcompose.dotsandlines.DotsAndLinesDemo
 import com.halilibo.madewithcompose.schedulecalendar.ScheduleCalendarDemo
 import com.halilibo.madewithcompose.videoplayer.VideoPlayerDemo
 import com.halilibo.madewithcompose.weightentry.WeightEntryDemo
+import com.halilibo.madewithcompose.markdowneditor.MarkdownEditorDemo
 
 enum class DemoEntry(
     val title: String,
@@ -53,6 +54,13 @@ enum class DemoEntry(
         "weightentry",
         @Composable {
             WeightEntryDemo()
+        }
+    ),
+    MarkdownEditor(
+        "Markdown Editor",
+        "markdowneditor",
+        @Composable {
+            MarkdownEditorDemo()
         }
     )
 }

@@ -49,17 +49,27 @@ dependencies {
   implementation(project(":dotsandlines"))
   implementation(project(":calendar"))
   implementation(project(":weightentry"))
+  implementation(project(":screenshot"))
   implementation(project(":colors"))
 
   implementation("com.google.android.material:material:1.4.0")
+
   implementation(Compose.ui)
   implementation(Compose.material)
   implementation(Compose.uiTooling)
   implementation(Compose.iconsExtended)
   implementation(Compose.activity)
   implementation(Compose.navigation)
+  implementation(Compose.uiUtil)
   implementation(Accompanist.pager)
-  implementation(Accompanist.coil)
+  implementation(Accompanist.insets)
+
+  implementation(Libraries.coil)
+
+  implementation(RichText.material)
+  implementation(RichText.markdown)
+  implementation(RichText.printing)
+
   implementation("com.google.code.gson:gson:2.8.6")
   implementation("androidx.lifecycle:lifecycle-common-java8:2.3.1")
   testImplementation("junit:junit:4.13.2")

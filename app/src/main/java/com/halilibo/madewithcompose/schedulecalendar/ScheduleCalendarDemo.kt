@@ -26,7 +26,7 @@ import kotlin.random.Random
 fun ScheduleCalendarDemo() {
   val viewSpan = remember { mutableStateOf(48 * 3600L) }
   val eventTimesVisible = remember { mutableStateOf(true) }
-  Column(modifier = Modifier.fillMaxHeight()) {
+  Column {
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
       IconButton(onClick = {
         viewSpan.value = (viewSpan.value * 2).coerceAtMost(96 * 3600)
