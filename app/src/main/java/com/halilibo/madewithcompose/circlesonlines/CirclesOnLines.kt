@@ -1,9 +1,6 @@
 package com.halilibo.madewithcompose.circlesonlines
 
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.CubicBezierEasing
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -26,6 +23,14 @@ import kotlin.math.sin
 @Composable
 fun CirclesOnLinesDemo() {
     var isStarted by remember { mutableStateOf(false) }
+    val revealOrderAnimation = remember { Animatable(initialValue = 0, Int.VectorConverter) }
+    LaunchedEffect(isStarted) {
+        revealOrderAnimation.animateTo(
+            targetValue = if (isStarted) 8 else 0,
+            animationSpec = tween(16000, easing = LinearEasing)
+        )
+    }
+
     var linesVisible by remember { mutableStateOf(true) }
     Column(
         Modifier
@@ -56,15 +61,10 @@ fun CirclesOnLinesDemo() {
         ) {
             repeat(8) { index ->
                 val angle = PI.toFloat() / 8 * index
-                var isVisible by remember { mutableStateOf(0f) }
-                val alpha by animateFloatAsState(isVisible, animationSpec = tween(1000))
-                LaunchedEffect(isStarted) {
-                    if (isStarted) {
-                        val periodMillis = PERIOD.toLong()
-                        delay(DELAY_MAP[index]!! * periodMillis)
-                        isVisible = 1f
-                    }
-                }
+                val alpha by animateFloatAsState(
+                    if (DELAY_ORDER.take(revealOrderAnimation.value).contains(index)) 1f else 0f,
+                    animationSpec = tween(1000)
+                )
                 LineOscillator(
                     angle = angle,
                     delayMillis = PERIOD + index * PERIOD / 8,
@@ -83,14 +83,16 @@ fun LineOscillator(
     lineVisible: Boolean,
     modifier: Modifier
 ) {
-    val animatedValue = remember { Animatable(-1f) }
-
-    LaunchedEffect(delayMillis, angle) {
+    val animatedValue = remember { Animatable(initialValue = -1f) }
+    LaunchedEffect(Unit) {
         delay(delayMillis.toLong())
-        while (isActive) {
-            animatedValue.animateTo(1f, tween(PERIOD, easing = EASING))
-            animatedValue.animateTo(-1f, tween(PERIOD, easing = EASING))
-        }
+        animatedValue.animateTo(
+            targetValue = 1f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(durationMillis = PERIOD, easing = EASING),
+                repeatMode = RepeatMode.Reverse
+            )
+        )
     }
 
     Canvas(modifier.fillMaxSize()) {
@@ -122,13 +124,4 @@ fun LineOscillator(
 
 const val PERIOD = 2400
 val EASING = CubicBezierEasing(0.375f, 0f, 0.6f, 1f)
-val DELAY_MAP = mapOf(
-    0 to 0,
-    1 to 4,
-    2 to 2,
-    3 to 5,
-    4 to 1,
-    5 to 6,
-    6 to 3,
-    7 to 7
-)
+val DELAY_ORDER = listOf(0, 4, 2, 6, 1, 5, 3, 7)
