@@ -1,7 +1,7 @@
-const val kotlinVersion = "1.5.10"
+const val kotlinVersion = "1.5.21"
 
 object Compose {
-    const val version = "1.0.0-rc02"
+    const val version = "1.0.1"
     const val animation = "androidx.compose.animation:animation:$version"
     const val compiler = "androidx.compose.compiler:compiler:$version"
     const val foundation = "androidx.compose.foundation:foundation:$version"
@@ -28,6 +28,6 @@ object Accompanist {
 }
 
 object BuildPlugins {
-    const val androidGradlePlugin = "com.android.tools.build:gradle:7.1.0-alpha03"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:7.1.0-alpha06"
     const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
 }

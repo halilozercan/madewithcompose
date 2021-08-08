@@ -11,7 +11,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.accompanist.coil.rememberCoilPainter
+import coil.compose.LocalImageLoader
+import coil.compose.rememberImagePainter
 
 @Composable
 fun VideoListPage(
@@ -36,7 +37,10 @@ fun VideoListPage(
                     .padding(horizontal = 16.dp, vertical = 8.dp)
             ) {
                 Image(
-                    painter = rememberCoilPainter(video.thumb),
+                    painter = rememberImagePainter(
+                        data = video.thumb,
+                        imageLoader = LocalImageLoader.current
+                    ),
                     contentDescription = video.title,
                     modifier = Modifier.size(64.dp)
                 )
