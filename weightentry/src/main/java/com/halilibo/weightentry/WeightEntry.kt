@@ -269,7 +269,7 @@ private fun WeightSliderRow(
 @Composable
 fun WeightEntryPreview() {
     val state = rememberWeightEntryState(
-        initialValue = 180,
+        initialValue = 78,
         valueRange = 20..180
     )
     WeightEntry(
