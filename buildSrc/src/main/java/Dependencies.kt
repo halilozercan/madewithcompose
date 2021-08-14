@@ -32,7 +32,7 @@ object Libraries {
 }
 
 object BuildPlugins {
-    const val androidGradlePlugin = "com.android.tools.build:gradle:7.1.0-alpha06"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0"
     const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
 }
 
