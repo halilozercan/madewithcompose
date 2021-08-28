@@ -21,4 +21,6 @@ interface VideoPlayerController {
     fun reset()
 
     val state: StateFlow<VideoPlayerState>
+
+    fun dispose()
 }

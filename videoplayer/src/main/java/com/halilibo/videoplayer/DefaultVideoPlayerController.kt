@@ -6,6 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.ui.graphics.Color
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -16,8 +18,7 @@ import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.upstream.RawResourceDataSource
 import com.google.android.exoplayer2.util.Util
-import com.google.android.exoplayer2.video.VideoListener
-import com.halilibo.videoplayer.*
+import com.google.android.exoplayer2.video.VideoSize
 import com.halilibo.videoplayer.util.FlowDebouncer
 import com.halilibo.videoplayer.util.set
 import kotlinx.coroutines.*
@@ -26,9 +27,10 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 internal class DefaultVideoPlayerController(
     private val context: Context,
-    private val initialState: VideoPlayerState,
-    private val coroutineScope: CoroutineScope
+    private val initialState: VideoPlayerState
 ) : VideoPlayerController {
+
+    private val coroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     private val _state = MutableStateFlow(initialState)
     override val state: StateFlow<VideoPlayerState>
@@ -72,7 +74,7 @@ internal class DefaultVideoPlayerController(
     private var playerView: PlayerView? = null
 
     private var updateDurationAndPositionJob: Job? = null
-    private val playerEventListener = object : Player.EventListener {
+    private val playerListener = object : Player.Listener {
 
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
             if(PlaybackState.of(playbackState) == PlaybackState.READY) {
@@ -97,19 +99,12 @@ internal class DefaultVideoPlayerController(
                 )
             }
         }
-    }
 
-    private val videoListener = object : VideoListener {
-        override fun onVideoSizeChanged(
-            width: Int,
-            height: Int,
-            unappliedRotationDegrees: Int,
-            pixelWidthHeightRatio: Float
-        ) {
-            super.onVideoSizeChanged(width, height, unappliedRotationDegrees, pixelWidthHeightRatio)
+        override fun onVideoSizeChanged(videoSize: VideoSize) {
+            super.onVideoSizeChanged(videoSize)
 
             _state.set {
-                copy(videoSize = width.toFloat() to height.toFloat())
+                copy(videoSize = videoSize.width.toFloat() to videoSize.height.toFloat())
             }
         }
     }
@@ -120,9 +115,7 @@ internal class DefaultVideoPlayerController(
     private val exoPlayer = SimpleExoPlayer.Builder(context)
         .build()
         .apply {
-            playWhenReady = initialState.isPlaying
-            addListener(playerEventListener)
-            addVideoListener(videoListener)
+            addListener(playerListener)
         }
 
     /**
@@ -277,6 +270,26 @@ internal class DefaultVideoPlayerController(
     override fun reset() {
         exoPlayer.stop()
         previewExoPlayer.stop()
+    }
+
+    override fun dispose() {
+        reset()
+        coroutineScope.cancel(CancellationException("VideoPlayerController is disposed!"))
+    }
+
+    companion object {
+        fun saver(context: Context) = object : Saver<DefaultVideoPlayerController, VideoPlayerState> {
+            override fun restore(value: VideoPlayerState): DefaultVideoPlayerController {
+                return DefaultVideoPlayerController(
+                    context = context,
+                    initialState = value
+                )
+            }
+
+            override fun SaverScope.save(value: DefaultVideoPlayerController): VideoPlayerState {
+                return value.currentState { it }
+            }
+        }
     }
 }
 

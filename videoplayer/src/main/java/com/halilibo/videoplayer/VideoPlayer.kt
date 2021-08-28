@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.LocalContentColor
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.Saver
-import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,28 +20,14 @@ fun rememberVideoPlayerController(
     source: VideoPlayerSource? = null
 ): VideoPlayerController {
     val context = LocalContext.current
-    val coroutineScope = rememberCoroutineScope()
 
     return rememberSaveable(
-        context, coroutineScope,
-        saver = object : Saver<DefaultVideoPlayerController, VideoPlayerState> {
-            override fun restore(value: VideoPlayerState): DefaultVideoPlayerController {
-                return DefaultVideoPlayerController(
-                    context = context,
-                    initialState = value,
-                    coroutineScope = coroutineScope
-                )
-            }
-
-            override fun SaverScope.save(value: DefaultVideoPlayerController): VideoPlayerState {
-                return value.currentState { it }
-            }
-        },
+        context,
+        saver = DefaultVideoPlayerController.saver(context),
         init = {
             DefaultVideoPlayerController(
                 context = context,
-                initialState = VideoPlayerState(),
-                coroutineScope = coroutineScope
+                initialState = VideoPlayerState()
             ).apply {
                 source?.let { setSource(it) }
             }
