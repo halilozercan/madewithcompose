@@ -10,7 +10,7 @@ android {
 
   defaultConfig {
     applicationId = "com.halilibo.madewithcompose"
-    minSdk = 23
+    minSdk = 26
     targetSdk = 31
     versionCode = 1
     versionName = "1.0"
@@ -43,6 +43,15 @@ android {
   }
 }
 
+configurations.all {
+  resolutionStrategy.eachDependency {
+    if (requested.group.contains("org.jetbrains.compose")) {
+      val groupName = requested.group.replace("org.jetbrains.compose", "androidx.compose")
+      useTarget("$groupName:${requested.name}:${Compose.version}")
+    }
+  }
+}
+
 dependencies {
   implementation(project(":videoplayer"))
   implementation(project(":schedulecalendar"))
@@ -66,6 +75,7 @@ dependencies {
   implementation(Accompanist.insets)
 
   implementation(Libraries.coil)
+  implementation(Libraries.media)
 
   implementation(RichText.material)
   implementation(RichText.markdown)

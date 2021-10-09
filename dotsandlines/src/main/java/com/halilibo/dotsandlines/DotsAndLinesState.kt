@@ -9,6 +9,7 @@ import kotlin.math.roundToInt
 @Parcelize
 data class DotsAndLinesState(
     val dots: List<Dot> = emptyList(),
+    val pointer: Dot? = null,
     val dotRadius: Float,
     val size: IntSize = IntSize.Zero,
     val speed: Float

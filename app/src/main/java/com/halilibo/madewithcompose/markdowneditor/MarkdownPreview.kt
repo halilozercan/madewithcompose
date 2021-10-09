@@ -27,10 +27,11 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.FileProvider
+import com.halilibo.richtext.markdown.Markdown
+import com.halilibo.richtext.ui.RichText
+import com.halilibo.richtext.ui.material.MaterialRichText
 import com.halilibo.screenshot.Screenshot
 import com.halilibo.screenshot.rememberScreenshotController
-import com.zachklipp.richtext.markdown.Markdown
-import com.zachklipp.richtext.ui.material.RichText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -72,7 +73,7 @@ fun MarkdownPreview(
                 screenshotController = screenshotController,
                 modifier = Modifier.verticalScroll(state = rememberScrollState())
             ) {
-                RichText(modifier = Modifier.padding(8.dp)) {
+                MaterialRichText(modifier = Modifier.padding(8.dp)) {
                     Markdown(content = content.text)
                 }
             }

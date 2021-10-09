@@ -2,15 +2,18 @@ package com.halilibo.videoplayer
 
 import android.content.Context
 import android.net.Uri
+import android.support.v4.media.session.MediaSessionCompat
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.SaverScope
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.ui.PlayerView
@@ -104,10 +107,12 @@ internal class DefaultVideoPlayerController(
             super.onVideoSizeChanged(videoSize)
 
             _state.set {
-                copy(videoSize = videoSize.width.toFloat() to videoSize.height.toFloat())
+                copy(videoSize = Size(videoSize.width.toFloat(), videoSize.height.toFloat()))
             }
         }
     }
+
+    private val mediaSession: MediaSessionCompat
 
     /**
      * Internal exoPlayer instance
@@ -115,6 +120,9 @@ internal class DefaultVideoPlayerController(
     private val exoPlayer = SimpleExoPlayer.Builder(context)
         .build()
         .apply {
+            mediaSession = MediaSessionCompat(context, "sample")
+            val mediaSessionConnector = MediaSessionConnector(mediaSession)
+            mediaSessionConnector.setPlayer(this)
             addListener(playerListener)
         }
 
@@ -270,6 +278,14 @@ internal class DefaultVideoPlayerController(
     override fun reset() {
         exoPlayer.stop()
         previewExoPlayer.stop()
+    }
+
+    override fun startMediaSession() {
+        mediaSession.isActive = true
+    }
+
+    override fun stopMediaSession() {
+        mediaSession.isActive = false
     }
 
     override fun dispose() {

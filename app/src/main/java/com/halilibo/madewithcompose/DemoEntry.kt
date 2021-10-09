@@ -8,6 +8,7 @@ import com.halilibo.madewithcompose.schedulecalendar.ScheduleCalendarDemo
 import com.halilibo.madewithcompose.videoplayer.VideoPlayerDemo
 import com.halilibo.madewithcompose.weightentry.WeightEntryDemo
 import com.halilibo.madewithcompose.markdowneditor.MarkdownEditorDemo
+import com.halilibo.madewithcompose.pip.PictureInPictureDemo
 
 enum class DemoEntry(
     val title: String,
@@ -61,6 +62,13 @@ enum class DemoEntry(
         "markdowneditor",
         @Composable {
             MarkdownEditorDemo()
+        }
+    ),
+    PictureInPicture(
+        "Picture in Picture",
+        "pictureinpicture",
+        @Composable {
+            PictureInPictureDemo()
         }
     )
 }

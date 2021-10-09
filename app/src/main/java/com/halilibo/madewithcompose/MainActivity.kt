@@ -1,5 +1,6 @@
 package com.halilibo.madewithcompose
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -21,11 +22,14 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsPadding
-import com.google.accompanist.insets.systemBarsPadding
+import com.halilibo.madewithcompose.pip.LocalPipState
+import com.halilibo.madewithcompose.pip.composePip
 import com.halilibo.madewithcompose.ui.theme.LocalNightMode
 import com.halilibo.madewithcompose.ui.theme.MadeWithComposeTheme
 
 class MainActivity : ComponentActivity() {
+
+    private val composePipController = composePip()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,20 +38,22 @@ class MainActivity : ComponentActivity() {
         setContent {
             MadeWithComposeTheme {
                 ProvideWindowInsets {
-                    val navController = rememberNavController()
-                    Scaffold(
-                        topBar = {
-                            TopBar(navController = navController)
-                        }
-                    ) {
-                        Surface {
-                            NavHost(navController = navController, startDestination = "home") {
-                                composable("home") {
-                                    HomePage(navController)
-                                }
-                                DemoEntry.values().forEach { demo ->
-                                    composable(demo.destination) {
-                                        demo.composable()
+                    composePipController.ProvidePip {
+                        val navController = rememberNavController()
+                        Scaffold(
+                            topBar = {
+                                TopBar(navController = navController)
+                            }
+                        ) {
+                            Surface(modifier = Modifier.navigationBarsPadding()) {
+                                NavHost(navController = navController, startDestination = "home") {
+                                    composable("home") {
+                                        HomePage(navController)
+                                    }
+                                    DemoEntry.values().forEach { demo ->
+                                        composable(demo.destination) {
+                                            demo.composable()
+                                        }
                                     }
                                 }
                             }
@@ -57,6 +63,19 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    override fun onUserLeaveHint() {
+        super.onUserLeaveHint()
+        composePipController.onUserLeaveHint(this)
+    }
+
+    override fun onPictureInPictureModeChanged(
+        isInPictureInPictureMode: Boolean,
+        newConfig: Configuration?
+    ) {
+        super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
+        composePipController.pictureInPictureModeChanged(isInPictureInPictureMode)
+    }
 }
 
 @Composable
@@ -64,24 +83,29 @@ fun TopBar(navController: NavController) {
     val currentBackStackEntry = navController.currentBackStackEntryAsState().value
     val currentRouteName = currentBackStackEntry?.destination?.route
     val currentRouteTitle = DemoEntry.values().firstOrNull { it.destination == currentRouteName }?.title
-    TopAppBar(
-        title = {
-            Text(text = currentRouteTitle ?: "Home")
-        },
-        actions = {
-            val nightMode = LocalNightMode.current
-            Icon(Icons.Default.LightMode, contentDescription = "")
-            Spacer(modifier = Modifier.width(8.dp))
-            Switch(
-                checked = nightMode.isNight,
-                onCheckedChange = { isNight ->
-                    if (isNight) nightMode.setNight() else nightMode.setDay()
-                }
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Icon(Icons.Default.DarkMode, contentDescription = "")
-            Spacer(modifier = Modifier.width(16.dp))
-        },
-        modifier = Modifier.statusBarsPadding()
-    )
+
+    val pipController = LocalPipState.current
+
+    if (!pipController.isInPictureInPicture.value) {
+        TopAppBar(
+            title = {
+                Text(text = currentRouteTitle ?: "Home")
+            },
+            actions = {
+                val nightMode = LocalNightMode.current
+                Icon(Icons.Default.LightMode, contentDescription = "")
+                Spacer(modifier = Modifier.width(8.dp))
+                Switch(
+                    checked = nightMode.isNight,
+                    onCheckedChange = { isNight ->
+                        if (isNight) nightMode.setNight() else nightMode.setDay()
+                    }
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Icon(Icons.Default.DarkMode, contentDescription = "")
+                Spacer(modifier = Modifier.width(16.dp))
+            },
+            modifier = Modifier.statusBarsPadding()
+        )
+    }
 }

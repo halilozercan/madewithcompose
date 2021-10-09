@@ -20,6 +20,10 @@ interface VideoPlayerController {
 
     fun reset()
 
+    fun startMediaSession()
+
+    fun stopMediaSession()
+
     val state: StateFlow<VideoPlayerState>
 
     fun dispose()

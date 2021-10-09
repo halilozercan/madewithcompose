@@ -8,7 +8,7 @@ android {
     compileSdk = 31
 
     defaultConfig {
-        minSdk = 23
+        minSdk = 26
         targetSdk = 31
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -46,7 +46,9 @@ dependencies {
     implementation(Compose.uiTooling)
     implementation(Compose.iconsExtended)
     implementation(Compose.activity)
+    implementation(Libraries.media)
     implementation(Accompanist.pager)
     implementation("com.google.android.exoplayer:exoplayer:2.14.0")
+    implementation("com.google.android.exoplayer:extension-mediasession:2.14.0")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
 }

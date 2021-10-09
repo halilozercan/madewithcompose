@@ -135,9 +135,9 @@ fun MinimizeLayout(
         hideOffsetFraction = minimizeLayoutState.hiddenOffset.value,
         minimizableContent = { constraints ->
             val fullHeight = constraints.maxHeight.toFloat()
-            val minimizedHeight by animateFloatAsState(targetValue = with(density) {
+            val minimizedHeight = animateFloatAsState(targetValue = with(density) {
                 minimizedContentHeightState(fullHeight.toDp()).toPx()
-            })
+            }).value.coerceAtMost(fullHeight)
             val anchors = mapOf(
                 fullHeight - minimizedHeight to MinimizeLayoutValue.Minimized,
                 0f to MinimizeLayoutValue.Expanded
