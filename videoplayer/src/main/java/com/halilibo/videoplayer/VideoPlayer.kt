@@ -58,7 +58,7 @@ fun VideoPlayer(
         LocalContentColor provides Color.White,
         LocalVideoPlayerController provides videoPlayerController
     ) {
-        val aspectRatio by videoPlayerController.collect { videoSize.first / videoSize.second }
+        val aspectRatio by videoPlayerController.collect { videoSize.width / videoSize.height }
 
         Box(
             modifier = Modifier

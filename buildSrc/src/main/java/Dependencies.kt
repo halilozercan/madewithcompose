@@ -1,7 +1,7 @@
-const val kotlinVersion = "1.5.21"
+const val kotlinVersion = "1.5.31"
 
 object Compose {
-    const val version = "1.1.0-alpha02"
+    const val version = "1.1.0-alpha05"
     const val animation = "androidx.compose.animation:animation:$version"
     const val compiler = "androidx.compose.compiler:compiler:$version"
     const val foundation = "androidx.compose.foundation:foundation:$version"
@@ -29,6 +29,7 @@ object Accompanist {
 
 object Libraries {
     const val coil = "io.coil-kt:coil-compose:1.3.2"
+    const val media = "androidx.media:media:1.4.2"
 }
 
 object BuildPlugins {
@@ -37,7 +38,7 @@ object BuildPlugins {
 }
 
 object RichText {
-    private const val version = "0.6.1-SNAPSHOT"
+    private const val version = "0.8.1"
     const val material = "com.halilibo.compose-richtext:richtext-ui-material:$version"
     const val markdown = "com.halilibo.compose-richtext:richtext-commonmark:$version"
     const val printing = "com.halilibo.compose-richtext:printing:$version"

@@ -1,7 +1,9 @@
 package com.halilibo.madewithcompose.videoplayer
 
+import android.graphics.Rect
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
@@ -9,7 +11,9 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.TextStyle
@@ -20,10 +24,12 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.google.gson.Gson
 import com.halilibo.madewithcompose.R
+import com.halilibo.madewithcompose.pip.LocalPipState
 import com.halilibo.videoplayer.VideoPlayer
+import com.halilibo.videoplayer.VideoPlayerController
 import com.halilibo.videoplayer.VideoPlayerSource
 import com.halilibo.videoplayer.rememberVideoPlayerController
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -35,11 +41,21 @@ fun VideoPlayerDemo() {
     val videoPlayerController = rememberVideoPlayerController()
     val videoPlayerUiState by videoPlayerController.state.collectAsState()
     val lifecycleOwner = LocalLifecycleOwner.current
+    val pipState = LocalPipState.current
 
     DisposableEffect(videoPlayerController, lifecycleOwner) {
         val observer = object : DefaultLifecycleObserver {
-            override fun onPause(owner: LifecycleOwner) {
+            override fun onStart(owner: LifecycleOwner) {
+                videoPlayerController.startMediaSession()
+            }
+
+            override fun onStop(owner: LifecycleOwner) {
                 videoPlayerController.pause()
+                videoPlayerController.stopMediaSession()
+            }
+
+            override fun onDestroy(owner: LifecycleOwner) {
+                videoPlayerController.reset()
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)
@@ -49,11 +65,17 @@ fun VideoPlayerDemo() {
         }
     }
 
+    with(pipState) {
+        PipEnabled(isEnabled = selectedVideo != null && videoPlayerUiState.isPlaying)
+        setAspectRatio(videoPlayerUiState.videoSize.width, videoPlayerUiState.videoSize.height)
+    }
+
     val minimizeLayoutState = rememberMinimizeLayoutState(MinimizeLayoutValue.Expanded)
 
     val selectedVideoFlow = remember { snapshotFlow { selectedVideo } }
+
     LaunchedEffect(Unit) {
-        selectedVideoFlow.collect { video ->
+        selectedVideoFlow.onEach { video ->
             if (video != null) {
                 videoPlayerController.setSource(VideoPlayerSource.Network(video.sources.first()))
                 minimizeLayoutState.expand()
@@ -61,12 +83,12 @@ fun VideoPlayerDemo() {
                 minimizeLayoutState.hide()
                 videoPlayerController.reset()
             }
-        }
+        }.launchIn(this)
     }
 
     val isFullyMaximized = minimizeLayoutState.currentValue == MinimizeLayoutValue.Expanded &&
-        minimizeLayoutState.targetValue != MinimizeLayoutValue.Minimized &&
-        !minimizeLayoutState.isHidden
+            minimizeLayoutState.targetValue != MinimizeLayoutValue.Minimized &&
+            !minimizeLayoutState.isHidden
 
     BackHandler(
         onBack = {
@@ -75,66 +97,93 @@ fun VideoPlayerDemo() {
         enabled = isFullyMaximized
     )
 
-    MinimizeLayout(
-        minimizeLayoutState = minimizeLayoutState,
-        minimizedContentHeight = { 60.dp },
-        minimizableContent = { swipeable ->
-            val videoTitle = selectedVideo?.title ?: ""
-            val videoDescription = selectedVideo?.description ?: ""
+    if (pipState.isInPictureInPicture.value) {
+        PictureInPictureVideoPlayerDemo(videoPlayerController)
+    } else {
+        MinimizeLayout(
+            minimizeLayoutState = minimizeLayoutState,
+            minimizedContentHeight = { 60.dp },
+            minimizableContent = { swipeable ->
+                val videoTitle = selectedVideo?.title ?: ""
+                val videoDescription = selectedVideo?.description ?: ""
 
-            VideoPlayerPage(
-                videoPlayer = {
-                    VideoPlayer(
-                        videoPlayerController = videoPlayerController,
-                        backgroundColor = Color.Transparent,
-                        modifier = Modifier.then(swipeable),
-                        controlsEnabled = isFullyMaximized
-                    )
-                },
-                content = {
-                    Text(
-                        videoTitle,
-                        style = TextStyle(
-                            fontSize = 22.sp,
-                            fontWeight = FontWeight.Bold
-                        ),
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .clickable {
-                                selectedVideo = null
-                            }
-                    )
-                    Text(
-                        videoDescription,
-                        style = TextStyle(
-                            fontSize = 14.sp
-                        ),
-                        modifier = Modifier.padding(horizontal = 16.dp)
-                    )
-                },
-                minimizedContent = {
-                    MinimizedTitleAndControls(
-                        videoTitle = videoTitle,
-                        isPlaying = videoPlayerUiState.isPlaying,
-                        onPlayPauseToggle = { videoPlayerController.playPauseToggle() },
-                        onDismiss = { selectedVideo = null },
-                        modifier = Modifier.then(swipeable)
-                    )
-                },
-                swipeProgress = minimizeLayoutState.swipeProgress,
-                modifier = Modifier
-            )
-        }
-    ) { paddingValues ->
-        Surface {
-            VideoListPage(
-                onVideoSelected = { video ->
-                    selectedVideo = video
-                },
-                contentPadding = paddingValues
-            )
+                VideoPlayerPage(
+                    videoPlayer = {
+                        VideoPlayer(
+                            videoPlayerController = videoPlayerController,
+                            backgroundColor = Color.Transparent,
+                            modifier = Modifier
+                                .then(swipeable)
+                                .onGloballyPositioned {
+                                    val size = it.size
+                                    val positionInWindow = it.localToWindow(Offset.Zero)
+                                    pipState.setSourceRectHint(Rect(
+                                        positionInWindow.x.toInt(),
+                                        positionInWindow.y.toInt(),
+                                        (positionInWindow.x + size.width).toInt(),
+                                        (positionInWindow.y + size.height).toInt()
+                                    ))
+                                },
+                            controlsEnabled = isFullyMaximized
+                        )
+                    },
+                    content = {
+                        Text(
+                            videoTitle,
+                            style = TextStyle(
+                                fontSize = 22.sp,
+                                fontWeight = FontWeight.Bold
+                            ),
+                            modifier = Modifier
+                                .padding(16.dp)
+                                .clickable {
+                                    selectedVideo = null
+                                }
+                        )
+                        Text(
+                            videoDescription,
+                            style = TextStyle(
+                                fontSize = 14.sp
+                            ),
+                            modifier = Modifier.padding(horizontal = 16.dp)
+                        )
+                    },
+                    minimizedContent = {
+                        MinimizedTitleAndControls(
+                            videoTitle = videoTitle,
+                            isPlaying = videoPlayerUiState.isPlaying,
+                            onPlayPauseToggle = { videoPlayerController.playPauseToggle() },
+                            onDismiss = { selectedVideo = null },
+                            modifier = Modifier.then(swipeable)
+                        )
+                    },
+                    swipeProgress = minimizeLayoutState.swipeProgress,
+                    modifier = Modifier
+                )
+            }
+        ) { paddingValues ->
+            Surface {
+                VideoListPage(
+                    onVideoSelected = { video ->
+                        selectedVideo = video
+                    },
+                    contentPadding = paddingValues
+                )
+            }
         }
     }
+}
+
+@Composable
+fun PictureInPictureVideoPlayerDemo(
+    videoPlayerController: VideoPlayerController
+) {
+    VideoPlayer(
+        videoPlayerController = videoPlayerController,
+        backgroundColor = Color.Transparent,
+        controlsEnabled = false,
+        modifier = Modifier.fillMaxSize()
+    )
 }
 
 @Composable

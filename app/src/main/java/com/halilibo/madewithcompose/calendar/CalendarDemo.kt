@@ -83,9 +83,9 @@ fun MonthRow(
     targetState = month.asCalendar.asDate,
     transitionSpec = {
       if (initialState < targetState) {
-        slideInHorizontally({ it }) with slideOutHorizontally({ -it })
+        slideInHorizontally(initialOffsetX = { it }) with slideOutHorizontally(targetOffsetX = { -it })
       } else {
-        slideInHorizontally({ -it }) with slideOutHorizontally({ it })
+        slideInHorizontally(initialOffsetX = { -it }) with slideOutHorizontally(targetOffsetX = { it })
       }
     },
     modifier = modifier
