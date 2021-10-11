@@ -37,3 +37,7 @@ is always tested.
 
 # Markdown Editor
 [For this project, I wrote the first line of code around a year ago to have a composable Markdown renderer. Then, I completely forgot about why I even implemented the renderer Smiling face with open mouth and cold sweat This is a resurrection of my very old project Hugetwit (from 140 era)](https://twitter.com/halilozercan/status/1424352149664935936)
+
+# Picture-in-Picture
+
+[Picture in Picture is one of those niche features that don't get much love but it's super important for video players. I tried running it using #JetpackCompose. It was ofc very trivial to update the UI Grinning face with smiling eyes](https://twitter.com/halilozercan/status/1446982300311375877)
