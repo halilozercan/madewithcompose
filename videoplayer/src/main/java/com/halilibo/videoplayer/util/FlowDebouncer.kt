@@ -19,9 +19,7 @@ class FlowDebouncer<T>(timeoutMillis: Long): Flow<T> {
         sourceChannel.send(item)
     }
 
-    @InternalCoroutinesApi
     override suspend fun collect(collector: FlowCollector<T>) {
         flow.collect(collector)
     }
-
 }

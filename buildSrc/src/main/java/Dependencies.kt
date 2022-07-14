@@ -1,9 +1,10 @@
-const val kotlinVersion = "1.5.31"
+const val kotlinVersion = "1.7.0"
 
 object Compose {
-    const val version = "1.1.0-alpha05"
+    const val version = "1.3.0-alpha01"
+    const val compilerVersion = "1.2.0"
     const val animation = "androidx.compose.animation:animation:$version"
-    const val compiler = "androidx.compose.compiler:compiler:$version"
+    const val compiler = "androidx.compose.compiler:compiler:$compilerVersion"
     const val foundation = "androidx.compose.foundation:foundation:$version"
     const val material = "androidx.compose.material:material:$version"
     const val runtime = "androidx.compose.runtime:runtime:$version"
@@ -22,18 +23,18 @@ object Compose {
 }
 
 object Accompanist {
-    private const val version = "0.16.0"
+    private const val version = "0.24.13-rc"
     const val pager = "com.google.accompanist:accompanist-pager:$version"
     const val insets = "com.google.accompanist:accompanist-insets:$version"
 }
 
 object Libraries {
-    const val coil = "io.coil-kt:coil-compose:1.3.2"
+    const val coil = "io.coil-kt:coil-compose:2.1.0"
     const val media = "androidx.media:media:1.4.2"
 }
 
 object BuildPlugins {
-    const val androidGradlePlugin = "com.android.tools.build:gradle:7.0.0"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:7.4.0-alpha08"
     const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
 }
 

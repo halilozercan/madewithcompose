@@ -6,11 +6,10 @@ import androidx.compose.ui.unit.IntSize
 import kotlinx.parcelize.Parcelize
 import kotlin.math.sqrt
 
-@Parcelize
 data class Dot(
     val position: Offset,
     val vector: Offset
-) : Parcelable {
+) {
     companion object {
         /**
          * Calculate this [Dot]'s distance to another one.

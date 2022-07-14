@@ -107,7 +107,7 @@ internal class DefaultVideoPlayerController(
             super.onVideoSizeChanged(videoSize)
 
             _state.set {
-                copy(videoSize = Size(videoSize.width.toFloat(), videoSize.height.toFloat()))
+                copy(videoWidth = videoSize.width.toFloat(), videoHeight = videoSize.height.toFloat())
             }
         }
     }

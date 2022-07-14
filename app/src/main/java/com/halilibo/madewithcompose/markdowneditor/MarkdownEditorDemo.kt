@@ -35,10 +35,6 @@ fun MarkdownEditorDemo() {
             Hugetwit was one of my first Android projects that made me decide to take #AndroidDev as my career.
             
             This is just a reincarnation of that project in Compose :)
-            
-            Also we support images as well 😀
-            
-            ![random image](https://3.bp.blogspot.com/-VVp3WvJvl84/X0Vu6EjYqDI/AAAAAAAAPjU/ZOMKiUlgfg8ok8DY8Hc-ocOvGdB0z86AgCLcBGAsYHQ/s1600/jetpack%2Bcompose%2Bicon_RGB.png "Jetpack Compose")
             """.trimIndent()
         )
     )

@@ -31,7 +31,7 @@ fun Modifier.dotsAndLines(
     speed: Float,
     populationFactor: Float
 ) = composed {
-    val dotsAndLinesModel = rememberSaveable(saver = DotsAndLinesModel.Saver) {
+    val dotsAndLinesModel = remember {
         DotsAndLinesModel(
             DotsAndLinesState(
                 dotRadius = dotRadius,
@@ -100,7 +100,7 @@ fun Modifier.dotsAndLines(
         }
 }
 
-@Stable
+@Immutable
 class DotsAndLinesModel(
     initialDotsAndLinesState: DotsAndLinesState
 ) {
@@ -150,13 +150,6 @@ class DotsAndLinesModel(
 
     fun pointerUp() {
         dotsAndLinesState = dotsAndLinesState.copy(pointer = null)
-    }
-
-    companion object {
-        val Saver = Saver<DotsAndLinesModel, DotsAndLinesState>(
-            save = { value -> value.dotsAndLinesState },
-            restore = { DotsAndLinesModel(it) }
-        )
     }
 }
 

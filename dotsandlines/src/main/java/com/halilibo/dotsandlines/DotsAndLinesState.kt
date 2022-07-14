@@ -6,14 +6,13 @@ import com.halilibo.dotsandlines.Dot.Companion.next
 import kotlinx.parcelize.Parcelize
 import kotlin.math.roundToInt
 
-@Parcelize
 data class DotsAndLinesState(
     val dots: List<Dot> = emptyList(),
     val pointer: Dot? = null,
     val dotRadius: Float,
     val size: IntSize = IntSize.Zero,
     val speed: Float
-) : Parcelable {
+) {
 
     companion object {
         // TODO(halilozercan): A real size changed algorithm instead of resetting everything

@@ -1,6 +1,7 @@
 package com.halilibo.madewithcompose
 
 import androidx.compose.runtime.Composable
+import com.halilibo.madewithcompose.brush.BrushDemo
 import com.halilibo.madewithcompose.calendar.CalendarDemo
 import com.halilibo.madewithcompose.circlesonlines.CirclesOnLinesDemo
 import com.halilibo.madewithcompose.dotsandlines.DotsAndLinesDemo
@@ -69,6 +70,13 @@ enum class DemoEntry(
         "pictureinpicture",
         @Composable {
             PictureInPictureDemo()
+        }
+    ),
+    TextLighting(
+        "Text Lighting",
+        "textlighting",
+        @Composable {
+            BrushDemo()
         }
     )
 }

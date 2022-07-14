@@ -5,13 +5,13 @@ plugins {
 }
 
 android {
-  compileSdk = 31
+  compileSdk = 32
   buildToolsVersion = "30.0.3"
 
   defaultConfig {
     applicationId = "com.halilibo.madewithcompose"
     minSdk = 26
-    targetSdk = 31
+    targetSdk = 32
     versionCode = 1
     versionName = "1.0"
 
@@ -28,18 +28,28 @@ android {
     }
   }
   compileOptions {
-    isCoreLibraryDesugaringEnabled = true
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
   }
   kotlinOptions {
-    jvmTarget = "1.8"
+    jvmTarget = "11"
   }
   buildFeatures {
     compose = true
   }
   composeOptions {
-    kotlinCompilerExtensionVersion = Compose.version
+    kotlinCompilerExtensionVersion = Compose.compilerVersion
+  }
+  packagingOptions {
+    resources.excludes.add("META-INF/DEPENDENCIES")
+    resources.excludes.add("META-INF/LICENSE")
+    resources.excludes.add("META-INF/LICENSE.txt")
+    resources.excludes.add("META-INF/license.txt")
+    resources.excludes.add("META-INF/NOTICE")
+    resources.excludes.add("META-INF/NOTICE.txt")
+    resources.excludes.add("META-INF/notice.txt")
+    resources.excludes.add("META-INF/ASL2.0")
+    resources.excludes.add("META-INF/*.kotlin_module")
   }
 }
 
@@ -87,5 +97,4 @@ dependencies {
   androidTestImplementation("androidx.test.ext:junit:1.1.3")
   androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
   androidTestImplementation(Compose.testing)
-  coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
 }

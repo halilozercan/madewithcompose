@@ -43,10 +43,7 @@ fun Calendar(
     events: Set<CalendarEvent> = emptySet(),
     firstDayOfWeek: Int = Calendar.SUNDAY
 ) {
-    val pagerState = rememberPagerState(
-        pageCount = Int.MAX_VALUE,
-        initialPage = visibleMonth.monthIndex
-    )
+    val pagerState = rememberPagerState(initialPage = visibleMonth.monthIndex)
 
     val calendarScope = remember(firstDayOfWeek) { CalendarScope(firstDayOfWeek) }
 
@@ -68,6 +65,7 @@ fun Calendar(
 
     HorizontalPager(
         state = pagerState,
+        count = Int.MAX_VALUE,
         modifier = modifier.background(MaterialTheme.colors.surface),
         verticalAlignment = Alignment.Top
     ) { index ->
