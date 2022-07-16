@@ -41,3 +41,7 @@ is always tested.
 # Picture-in-Picture
 
 [Picture in Picture is one of those niche features that don't get much love but it's super important for video players. I tried running it using #JetpackCompose. It was ofc very trivial to update the UI Grinning face with smiling eyes](https://twitter.com/halilozercan/status/1446982300311375877)
+
+# Text Lighting
+
+[This demo](https://twitter.com/halilozercan/status/1546563464025481216) was inspired by [light.cretu.dev](https://light.cretu.dev/). Using Experimental Brush API for TextStyle, we are able to shine a light of radial gradient on a background text composable.
