@@ -1,7 +1,7 @@
 const val kotlinVersion = "1.7.0"
 
 object Compose {
-    const val version = "1.3.0-alpha01"
+    const val version = "1.3.0-alpha02"
     const val compilerVersion = "1.2.0"
     const val animation = "androidx.compose.animation:animation:$version"
     const val compiler = "androidx.compose.compiler:compiler:$compilerVersion"
