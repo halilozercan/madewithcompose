@@ -5,6 +5,7 @@ import com.halilibo.madewithcompose.brush.BrushDemo
 import com.halilibo.madewithcompose.calendar.CalendarDemo
 import com.halilibo.madewithcompose.circlesonlines.CirclesOnLinesDemo
 import com.halilibo.madewithcompose.dotsandlines.DotsAndLinesDemo
+import com.halilibo.madewithcompose.textonpath.DrawTextOnPathDemo
 import com.halilibo.madewithcompose.schedulecalendar.ScheduleCalendarDemo
 import com.halilibo.madewithcompose.videoplayer.VideoPlayerDemo
 import com.halilibo.madewithcompose.weightentry.WeightEntryDemo
@@ -77,6 +78,13 @@ enum class DemoEntry(
         "textlighting",
         @Composable {
             BrushDemo()
+        }
+    ),
+    DrawTextOnPath(
+        "Draw text on Path",
+        "textonpath",
+        @Composable {
+            DrawTextOnPathDemo()
         }
     )
 }

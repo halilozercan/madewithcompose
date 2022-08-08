@@ -45,3 +45,7 @@ is always tested.
 # Text Lighting
 
 [This demo](https://twitter.com/halilozercan/status/1546563464025481216) was inspired by [light.cretu.dev](https://light.cretu.dev/). Using Experimental Brush API for TextStyle, we are able to shine a light of radial gradient on a background text composable.
+
+# Drawing text on a Path
+
+[Making the waves with Jetpack Compose](https://twitter.com/halilozercan/status/1555736000910983169)
