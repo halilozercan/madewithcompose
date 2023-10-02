@@ -23,15 +23,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.FileProvider
 import com.halilibo.richtext.markdown.Markdown
-import com.halilibo.richtext.ui.RichText
 import com.halilibo.richtext.ui.material.MaterialRichText
 import com.halilibo.screenshot.Screenshot
-import com.halilibo.screenshot.rememberScreenshotController
+import com.halilibo.screenshot.ScreenshotController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -41,12 +39,12 @@ import java.io.IOException
 
 @Composable
 fun MarkdownPreview(
-    content: TextFieldValue,
+    content: CharSequence,
     onPreviewClick: () -> Unit
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-    val screenshotController = rememberScreenshotController()
+    val screenshotController = remember { ScreenshotController() }
     val backgroundColor = MaterialTheme.colors.surface
 
     Column {
@@ -74,7 +72,7 @@ fun MarkdownPreview(
                 modifier = Modifier.verticalScroll(state = rememberScrollState())
             ) {
                 MaterialRichText(modifier = Modifier.padding(8.dp)) {
-                    Markdown(content = content.text)
+                    Markdown(content = content.toString())
                 }
             }
 
@@ -88,9 +86,9 @@ fun MarkdownPreview(
                     coroutineScope.launch {
                         isButtonEnabled = false
                         screenshotController
-                            .drawView(backgroundColor)
-                            ?.asAndroidBitmap()
-                            ?.let {
+                            .draw(backgroundColor)
+                            .asAndroidBitmap()
+                            .let {
                                 saveImage(it, context)?.shareImage(context)
                             }
                         isButtonEnabled = true
@@ -127,8 +125,7 @@ private suspend fun saveImage(image: Bitmap, context: Context): Uri? = withConte
 }
 
 /**
- * Shares the PNG image from Uri.
- * @param uri Uri of image to share.
+ * Shares the PNG image from [this] Uri.
  */
 private fun Uri.shareImage(context: Context) {
     val intent = Intent(Intent.ACTION_SEND)

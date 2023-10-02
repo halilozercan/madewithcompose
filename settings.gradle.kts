@@ -6,6 +6,7 @@ dependencyResolutionManagement {
     google()
     mavenCentral()
     mavenLocal()
+    maven { url = uri("https://androidx.dev/snapshots/builds/10890965/artifacts/repository") }
   }
 }
 rootProject.name = "madewithcompose"

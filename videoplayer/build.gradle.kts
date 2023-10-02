@@ -45,7 +45,6 @@ dependencies {
     implementation(Compose.iconsExtended)
     implementation(Compose.activity)
     implementation(Libraries.media)
-    implementation(Accompanist.pager)
     implementation("com.google.android.exoplayer:exoplayer:2.14.0")
     implementation("com.google.android.exoplayer:extension-mediasession:2.14.0")
 }

@@ -1,7 +1,7 @@
 const val kotlinVersion = "1.9.10"
 
 object Compose {
-    const val version = "1.6.0-alpha04"
+    const val version = "1.6.0-SNAPSHOT"
     const val compilerVersion = "1.5.3"
     const val animation = "androidx.compose.animation:animation:$version"
     const val compiler = "androidx.compose.compiler:compiler:$compilerVersion"
@@ -20,12 +20,6 @@ object Compose {
     const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07"
 
     const val testing = "androidx.compose.ui:ui-test-junit4:$version"
-}
-
-object Accompanist {
-    private const val version = "0.24.13-rc"
-    const val pager = "com.google.accompanist:accompanist-pager:$version"
-    const val insets = "com.google.accompanist:accompanist-insets:$version"
 }
 
 object Libraries {

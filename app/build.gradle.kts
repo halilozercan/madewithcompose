@@ -82,8 +82,6 @@ dependencies {
   implementation(Compose.animation)
   implementation(Compose.navigation)
   implementation(Compose.uiUtil)
-  implementation(Accompanist.pager)
-  implementation(Accompanist.insets)
 
   implementation(Libraries.coil)
   implementation(Libraries.media)

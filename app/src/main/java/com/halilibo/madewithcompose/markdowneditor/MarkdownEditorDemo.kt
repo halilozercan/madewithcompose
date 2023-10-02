@@ -1,29 +1,31 @@
 package com.halilibo.madewithcompose.markdowneditor
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text2.input.TextFieldState
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.insets.navigationBarsWithImePadding
-import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun MarkdownEditorDemo() {
     val coroutineScope = rememberCoroutineScope()
     val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
 
-    val textFieldHistory = rememberTextFieldHistory(
-        initialTextFieldValue = TextFieldValue(
+    val state = rememberSaveable(saver = TextFieldState.Saver) {
+        TextFieldState(
             """
             Hello World
             
@@ -37,12 +39,12 @@ fun MarkdownEditorDemo() {
             This is just a reincarnation of that project in Compose :)
             """.trimIndent()
         )
-    )
+    }
 
     BottomSheetScaffold(
         sheetContent = {
             MarkdownPreview(
-                content = textFieldHistory.textFieldValue,
+                content = state.text,
                 onPreviewClick = {
                     coroutineScope.launch {
                         if (bottomSheetScaffoldState.bottomSheetState.isExpanded) {
@@ -60,16 +62,16 @@ fun MarkdownEditorDemo() {
         sheetShape = RoundedCornerShape(8.dp),
         modifier = Modifier
             .fillMaxSize()
-            .navigationBarsWithImePadding()
+            .navigationBarsPadding()
+            .imePadding()
     ) {
         Card {
             MarkdownEditor(
-                content = textFieldHistory.textFieldValue,
-                onContentChange = { textFieldHistory.onValueChange(it) },
-                onUndo = { textFieldHistory.undo() },
-                onRedo = { textFieldHistory.redo() },
-                undoEnabled = textFieldHistory.isBackEnabled,
-                redoEnabled = textFieldHistory.isForwardEnabled,
+                state = state,
+                onUndo = { state.undoState.undo() },
+                onRedo = { state.undoState.redo() },
+                undoEnabled = state.undoState.canUndo,
+                redoEnabled = state.undoState.canRedo,
                 modifier = Modifier.padding(bottom = 72.dp)
             )
         }

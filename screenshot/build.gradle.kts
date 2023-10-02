@@ -44,5 +44,4 @@ dependencies {
     implementation(Compose.uiTooling)
     implementation(Compose.iconsExtended)
     implementation(Compose.activity)
-    implementation(Accompanist.pager)
 }

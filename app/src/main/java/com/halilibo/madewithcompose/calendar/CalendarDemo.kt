@@ -70,7 +70,6 @@ fun CalendarDemo() {
   }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MonthRow(
   month: CalendarDay,
@@ -83,9 +82,9 @@ fun MonthRow(
     targetState = month.asCalendar.asDate,
     transitionSpec = {
       if (initialState < targetState) {
-        slideInHorizontally(initialOffsetX = { it }) with slideOutHorizontally(targetOffsetX = { -it })
+        slideInHorizontally { it } togetherWith slideOutHorizontally { -it }
       } else {
-        slideInHorizontally(initialOffsetX = { -it }) with slideOutHorizontally(targetOffsetX = { it })
+        slideInHorizontally { -it } togetherWith slideOutHorizontally { it }
       }
     },
     modifier = modifier

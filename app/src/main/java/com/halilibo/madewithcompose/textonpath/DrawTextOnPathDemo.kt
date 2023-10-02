@@ -13,9 +13,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Checkbox
 import androidx.compose.material.Slider
 import androidx.compose.material.Text
@@ -89,7 +91,10 @@ fun DrawTextOnPathDemo() {
   val path = squigglyUnderlinePathGenerator.getDemoPath()
 
   var drawPath by remember { mutableStateOf(true) }
-  Column(Modifier.padding(16.dp)) {
+  Column(
+    Modifier
+      .padding(16.dp)
+      .verticalScroll(rememberScrollState())) {
     Row(
       verticalAlignment = Alignment.CenterVertically,
       modifier = Modifier
@@ -105,6 +110,11 @@ fun DrawTextOnPathDemo() {
     Text(text = "Wavelength")
     Slider(value = wave, onValueChange = { wave = it }, valueRange = 0f..400f)
     DrawTextOnPathDemo(path, drawPath)
+
+    DemoBouncy("These letters\nshould be bouncing\n🎉🐇😛🐱")
+    DemoTyping("These letters\nshould have typing\nanimation\n❤️👻💃👨‍👩‍👧‍👦")
+    DemoRotating("I hope this animation\ndoes not cause vertigo\n🤪😭")
+    DemoDropping("These letters\nshould be dropping\nonto your screen\n☔️🔮")
   }
 }
 
@@ -117,7 +127,8 @@ fun DrawTextOnPathDemo(
   val pathMeasure = remember { PathMeasure() }
 
   Box(modifier = Modifier
-    .fillMaxSize()
+    .fillMaxWidth()
+    .height(300.dp)
     .drawWithCache {
       // cache expensive layout and box calculations so that each draw call is cheaper.
       val textLayoutResult = textMeasurer.measure(

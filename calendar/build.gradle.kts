@@ -44,5 +44,4 @@ dependencies {
     implementation(Compose.uiUtil)
     implementation(Compose.material)
     implementation(Compose.uiTooling)
-    implementation(Accompanist.pager)
 }

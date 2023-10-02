@@ -5,7 +5,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -20,9 +22,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.google.accompanist.insets.ProvideWindowInsets
-import com.google.accompanist.insets.navigationBarsPadding
-import com.google.accompanist.insets.statusBarsPadding
 import com.halilibo.madewithcompose.pip.LocalPipState
 import com.halilibo.madewithcompose.pip.composePip
 import com.halilibo.madewithcompose.ui.theme.LocalNightMode
@@ -38,23 +37,21 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             MadeWithComposeTheme {
-                ProvideWindowInsets {
-                    composePipController.ProvidePip {
-                        val navController = rememberNavController()
-                        Scaffold(
-                            topBar = {
-                                TopBar(navController = navController)
-                            }
-                        ) {
-                            Surface(modifier = Modifier.padding(it).navigationBarsPadding()) {
-                                NavHost(navController = navController, startDestination = "home") {
-                                    composable("home") {
-                                        HomePage(navController)
-                                    }
-                                    DemoEntry.values().forEach { demo ->
-                                        composable(demo.destination) {
-                                            demo.composable()
-                                        }
+                composePipController.ProvidePip {
+                    val navController = rememberNavController()
+                    Scaffold(
+                        topBar = {
+                            TopBar(navController = navController)
+                        }
+                    ) {
+                        Surface(modifier = Modifier.padding(it).navigationBarsPadding()) {
+                            NavHost(navController = navController, startDestination = "home") {
+                                composable("home") {
+                                    HomePage(navController)
+                                }
+                                DemoEntry.values().forEach { demo ->
+                                    composable(demo.destination) {
+                                        demo.composable()
                                     }
                                 }
                             }

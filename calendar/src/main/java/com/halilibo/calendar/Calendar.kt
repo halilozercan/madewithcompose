@@ -1,5 +1,8 @@
+@file:OptIn(ExperimentalFoundationApi::class, ExperimentalFoundationApi::class)
+
 package com.halilibo.calendar
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -10,6 +13,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
@@ -33,17 +38,12 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.calculateCurrentOffsetForPage
-import com.google.accompanist.pager.rememberPagerState
 import com.halilibo.colors.N100
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import kotlin.math.absoluteValue
 
-@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun Calendar(
     modifier: Modifier = Modifier,
@@ -55,7 +55,9 @@ fun Calendar(
     events: Set<CalendarEvent> = emptySet(),
     firstDayOfWeek: Int = Calendar.SUNDAY
 ) {
-    val pagerState = rememberPagerState(initialPage = visibleMonth.monthIndex)
+    val pagerState = rememberPagerState(initialPage = visibleMonth.monthIndex) {
+        Int.MAX_VALUE
+    }
 
     val calendarScope = remember(firstDayOfWeek) { CalendarScope(firstDayOfWeek) }
 
@@ -77,7 +79,6 @@ fun Calendar(
 
     HorizontalPager(
         state = pagerState,
-        count = Int.MAX_VALUE,
         modifier = modifier.background(MaterialTheme.colors.surface),
         verticalAlignment = Alignment.Top
     ) { index ->
@@ -95,7 +96,9 @@ fun Calendar(
                     // Calculate the absolute offset for the current page from the
                     // scroll position. We use the absolute value which allows us to mirror
                     // any effects for both directions
-                    val pageOffset = calculateCurrentOffsetForPage(index).absoluteValue
+                    val currentOffsetForPage = (pagerState.currentPage - index) +
+                        pagerState.currentPageOffsetFraction
+                    val pageOffset = currentOffsetForPage.absoluteValue
 
                     // We animate the scaleX + scaleY, between 85% and 100%
                     lerp(

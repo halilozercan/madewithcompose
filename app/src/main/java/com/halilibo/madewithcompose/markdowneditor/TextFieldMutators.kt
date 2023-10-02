@@ -1,72 +1,70 @@
+@file:OptIn(ExperimentalFoundationApi::class)
+
 package com.halilibo.madewithcompose.markdowneditor
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.text2.input.TextFieldBuffer
 import androidx.compose.ui.text.TextRange
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.input.getSelectedText
 
-fun TextFieldValue.inlineWrap(
-    startWrappedString: String,
-    endWrappedString: String = startWrappedString
-): TextFieldValue {
-    return copy(
-        annotatedString =
-        annotatedString.subSequence(0, selection.min) +
-                buildAnnotatedString { append(startWrappedString) } +
-                getSelectedText() +
-                buildAnnotatedString { append(endWrappedString) } +
-                annotatedString.subSequence(selection.max, text.length),
-        selection = TextRange(
-            selection.min + startWrappedString.length,
-            selection.max + startWrappedString.length
-        )
+fun TextFieldBuffer.inlineWrap(
+  startWrappedString: String,
+  endWrappedString: String = startWrappedString
+) {
+  val initialSelection = selectionInChars
+  replace(initialSelection.min, initialSelection.min, startWrappedString)
+  replace(initialSelection.max, initialSelection.max, endWrappedString)
+  selectCharsIn(
+    TextRange(
+      initialSelection.min + startWrappedString.length,
+      initialSelection.max + startWrappedString.length
     )
+  )
 }
 
-fun TextFieldValue.bold(): TextFieldValue = inlineWrap("**")
+fun TextFieldBuffer.bold() = inlineWrap("**")
 
-fun TextFieldValue.italic(): TextFieldValue = inlineWrap("_")
+fun TextFieldBuffer.italic() = inlineWrap("_")
 
-fun TextFieldValue.inlineCode(): TextFieldValue = inlineWrap("`")
+fun TextFieldBuffer.inlineCode() = inlineWrap("`")
 
-fun TextFieldValue.strikeThrough(): TextFieldValue = inlineWrap("~~")
+fun TextFieldBuffer.strikeThrough() = inlineWrap("~~")
 
-fun TextFieldValue.header(): TextFieldValue {
-    val lineStart = text.take(selection.min)
-        .lastIndexOf('\n')
-        .takeIf { it != -1 }
-        ?.let { it + 1 }
-        ?: 0
+fun TextFieldBuffer.header() {
+  val text = toString()
+  val lineStart = text.take(selectionInChars.min)
+    .lastIndexOf('\n')
+    .takeIf { it != -1 }
+    ?.let { it + 1 }
+    ?: 0
 
-    val appendedString = if (text[lineStart] == '#') "#" else "# "
+  val appendedString = if (text[lineStart] == '#') "#" else "# "
 
-    return copy(
-        annotatedString =
-        annotatedString.subSequence(0, lineStart) +
-                buildAnnotatedString { append(appendedString) } +
-                annotatedString.subSequence(lineStart, text.length),
-        selection = TextRange(
-            selection.min + appendedString.length,
-            selection.max + appendedString.length
-        )
+  val initialSelection = selectionInChars
+
+  replace(lineStart, lineStart, appendedString)
+  selectCharsIn(
+    TextRange(
+      initialSelection.min + appendedString.length,
+      initialSelection.max + appendedString.length
     )
+  )
 }
 
-fun TextFieldValue.quote(): TextFieldValue {
-    val lineStart = text.take(selection.min)
-        .lastIndexOf('\n')
-        .takeIf { it != -1 }
-        ?.let { it + 1 }
-        ?: 0
+fun TextFieldBuffer.quote() {
+  val text = toString()
+  val lineStart = text.take(selectionInChars.min)
+    .lastIndexOf('\n')
+    .takeIf { it != -1 }
+    ?.let { it + 1 }
+    ?: 0
 
-    return copy(
-        annotatedString =
-        annotatedString.subSequence(0, lineStart) +
-                buildAnnotatedString { append("> ") } +
-                annotatedString.subSequence(lineStart, text.length),
-        selection = TextRange(
-            selection.min + 2,
-            selection.max + 2
-        )
+  val initialSelection = selectionInChars
+
+  replace(lineStart, lineStart, "> ")
+  selectCharsIn(
+    TextRange(
+      initialSelection.min + 2,
+      initialSelection.max + 2
     )
+  )
 }
