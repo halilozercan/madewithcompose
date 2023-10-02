@@ -1,8 +1,8 @@
-const val kotlinVersion = "1.7.0"
+const val kotlinVersion = "1.9.10"
 
 object Compose {
-    const val version = "1.3.0-alpha02"
-    const val compilerVersion = "1.2.0"
+    const val version = "1.6.0-alpha04"
+    const val compilerVersion = "1.5.3"
     const val animation = "androidx.compose.animation:animation:$version"
     const val compiler = "androidx.compose.compiler:compiler:$compilerVersion"
     const val foundation = "androidx.compose.foundation:foundation:$version"
@@ -29,12 +29,12 @@ object Accompanist {
 }
 
 object Libraries {
-    const val coil = "io.coil-kt:coil-compose:2.1.0"
+    const val coil = "io.coil-kt:coil-compose:2.4.0"
     const val media = "androidx.media:media:1.4.2"
 }
 
 object BuildPlugins {
-    const val androidGradlePlugin = "com.android.tools.build:gradle:7.4.0-alpha08"
+    const val androidGradlePlugin = "com.android.tools.build:gradle:8.1.2"
     const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
 }
 

@@ -2,18 +2,32 @@ package com.halilibo.madewithcompose.pip
 
 import android.app.PictureInPictureParams
 import android.graphics.Rect
-import android.os.Build
 import android.util.Rational
 import androidx.activity.ComponentActivity
-import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Checkbox
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import java.util.*
+import java.util.UUID
 import kotlin.math.roundToInt
 
 @Composable
@@ -29,18 +43,19 @@ fun PictureInPictureDemo() {
                 Text("Currently in PiP")
             } else {
                 Text("This is not PiP")
-            }
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(
-                    checked = pipEnabledCheckboxState,
-                    onCheckedChange = { isChecked ->
-                        pipEnabledCheckboxState = isChecked
-                    }
-                )
 
-                Spacer(modifier = Modifier.width(4.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Checkbox(
+                        checked = pipEnabledCheckboxState,
+                        onCheckedChange = { isChecked ->
+                            pipEnabledCheckboxState = isChecked
+                        }
+                    )
 
-                Text(text = "Should enter PiP?")
+                    Spacer(modifier = Modifier.width(4.dp))
+
+                    Text(text = "Should enter PiP?")
+                }
             }
         }
     }

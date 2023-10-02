@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 dependencyResolutionManagement {
   repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
   repositories {
@@ -6,7 +8,7 @@ dependencyResolutionManagement {
     mavenLocal()
   }
 }
-rootProject.name = "MadeWithCompose"
+rootProject.name = "madewithcompose"
 include(":app")
 include(":videoplayer")
 include(":schedulecalendar")

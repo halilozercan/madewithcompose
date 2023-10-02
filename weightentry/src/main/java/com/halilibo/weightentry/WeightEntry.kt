@@ -2,11 +2,17 @@ package com.halilibo.weightentry
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.exponentialDecay
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Slider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -16,24 +22,19 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
-import androidx.compose.ui.input.pointer.consumePositionChange
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.util.VelocityTracker
-import androidx.compose.ui.layout.Layout
-import androidx.compose.ui.layout.ParentDataModifier
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextMotion
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.pow
@@ -159,6 +160,7 @@ private fun WeightNumbersRow(
                     fontSize = 48.sp,
                     color = color,
                     fontWeight = FontWeight.Bold,
+                    style = LocalTextStyle.current.copy(textMotion = TextMotion.Animated),
                     modifier = Modifier
                         .padding(4.dp)
                         .offsetByValue(number, currentValue, visibleRange)
@@ -210,7 +212,7 @@ fun Modifier.decayingScroll(
     state: WeightEntryState,
     coefficient: Int,
     fraction: Float
-): Modifier = composed {
+): Modifier = this.composed {
     val coroutineScope = rememberCoroutineScope()
     pointerInput(Unit) {
         detectHorizontalDragGestures(
@@ -221,7 +223,7 @@ fun Modifier.decayingScroll(
             val scrolledValue = (dragAmount / size.width) * coefficient
             coroutineScope.launch { state.changeValueBy(scrolledValue) }
             state.onDrag(change.uptimeMillis, - (change.position.x / size.width) * coefficient)
-            change.consumePositionChange()
+            change.consume()
         }
     }
 }

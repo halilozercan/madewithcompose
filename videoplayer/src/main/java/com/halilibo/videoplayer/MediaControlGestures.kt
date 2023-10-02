@@ -8,12 +8,22 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FastForward
 import androidx.compose.material.icons.filled.FastRewind
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -21,17 +31,16 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.input.pointer.PointerInputScope
-import androidx.compose.ui.input.pointer.consumePositionChange
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.halilibo.videoplayer.util.getDurationString
-import kotlinx.android.parcel.Parcelize
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.parcelize.Parcelize
 import kotlin.math.abs
 
 @Composable
@@ -62,7 +71,7 @@ fun MediaControlGestures(
 
 fun Modifier.mediaDragAndTapGestures(
     quickSeekDirectionState: MutableState<QuickSeekDirection>
-) = composed {
+) = this.composed {
     val controller = LocalVideoPlayerController.current
 
     val coroutineScope = rememberCoroutineScope()
@@ -102,7 +111,7 @@ fun Modifier.mediaDragAndTapGestures(
             onTap = {
                 controller.showControls()
             },
-            onDragStart = { offset ->
+            onDragStart = {
                 wasPlaying = controller.currentState { it.isPlaying }
                 controller.pause()
 
@@ -166,7 +175,7 @@ suspend fun PointerInputScope.detectMediaPlayerGesture(
                 onDragEnd = onDragEnd,
                 onHorizontalDrag = { change, dragAmount ->
                     onDrag(dragAmount)
-                    change.consumePositionChange()
+                    change.consume()
                 },
             )
         }

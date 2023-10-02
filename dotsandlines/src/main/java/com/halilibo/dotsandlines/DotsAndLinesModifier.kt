@@ -1,16 +1,17 @@
 package com.halilibo.dotsandlines
 
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.Saver
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.consumePositionChange
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.IntSize
@@ -30,7 +31,7 @@ fun Modifier.dotsAndLines(
     dotRadius: Float,
     speed: Float,
     populationFactor: Float
-) = composed {
+) = this.composed {
     val dotsAndLinesModel = remember {
         DotsAndLinesModel(
             DotsAndLinesState(
@@ -69,7 +70,7 @@ fun Modifier.dotsAndLines(
             },
             onDrag = { change, dragAmount ->
                 dotsAndLinesModel.pointerMove(dragAmount)
-                change.consumePositionChange()
+                change.consume()
             }
         )
     }

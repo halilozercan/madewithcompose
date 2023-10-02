@@ -37,7 +37,7 @@ fun WeightScale(
 ) {
     val animatedValue = remember { Animatable(weight, Int.VectorConverter) }
     LaunchedEffect(weight) {
-        animatedValue.animateTo(weight)
+        animatedValue.snapTo(weight)
     }
 
     Box(

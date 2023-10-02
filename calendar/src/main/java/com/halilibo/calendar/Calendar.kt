@@ -3,20 +3,32 @@ package com.halilibo.calendar
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.contentColorFor
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -26,9 +38,9 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
 import com.halilibo.colors.N100
-import kotlinx.coroutines.flow.collect
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalPagerApi::class)
@@ -124,7 +136,7 @@ private fun CalendarScope.CalendarPage(
         content = {
             daysOfWeek.forEach { dayOfWeek ->
                 Text(
-                    text = dayOfWeek.take(1).toUpperCase(),
+                    text = dayOfWeek.take(1).toUpperCase(Locale.current),
                     fontSize = 12.sp,
                     color = N100,
                     lineHeight = 16.sp,
@@ -133,7 +145,7 @@ private fun CalendarScope.CalendarPage(
                 )
             }
 
-            daysInMonth.forEach { (calendarDay, dayOfWeek) ->
+            daysInMonth.forEach { (calendarDay, _) ->
                 val isInCurrentMonth = monthIndex == calendarDay.monthIndex
                 CalendarDayView(
                     number = calendarDay.day,
@@ -179,7 +191,7 @@ private fun CalendarScope.CalendarPage(
 }
 
 @Composable
-private fun CalendarScope.CalendarDayView(
+private fun CalendarDayView(
     number: Int,
     isSelected: Boolean,
     isToday: Boolean,
@@ -285,7 +297,7 @@ private fun CalendarScope.daysOfWeek(format: String): List<String> {
     val calendar = Calendar.getInstance().apply {
         firstDayOfWeek = this@daysOfWeek.firstDayOfWeek
     }
-    val simpleDateFormat = SimpleDateFormat(format, Locale.getDefault())
+    val simpleDateFormat = SimpleDateFormat(format, java.util.Locale.getDefault())
     calendar.set(Calendar.DAY_OF_WEEK, 1)
     return buildList {
         repeat(7) {

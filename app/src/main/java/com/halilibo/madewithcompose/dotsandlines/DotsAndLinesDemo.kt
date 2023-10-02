@@ -11,7 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.halilibo.dotsandlines.dotsAndLines
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -136,3 +136,9 @@ data class DotsAndLinesConfig(
     val speedCoefficient: Float = 0.05f,
     val population: Float = 0.3f // per 100^2 pixels
 ) : Parcelable
+
+
+@OptIn(ExperimentalMaterialApi::class)
+val BottomSheetState.isAnimationRunning: Boolean
+    @OptIn(ExperimentalMaterialApi::class)
+    get() = targetValue != currentValue

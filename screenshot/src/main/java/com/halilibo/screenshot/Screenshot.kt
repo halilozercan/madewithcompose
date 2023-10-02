@@ -2,7 +2,6 @@ package com.halilibo.screenshot
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Color.argb
 import android.view.View
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -99,11 +98,11 @@ fun Screenshot(
                 }
 
                 addOnAttachStateChangeListener(object: View.OnAttachStateChangeListener {
-                    override fun onViewAttachedToWindow(v: View?) {
+                    override fun onViewAttachedToWindow(v: View) {
                         (screenshotController as? DefaultScreenshotController)?.attach(v as ComposeView)
                     }
 
-                    override fun onViewDetachedFromWindow(v: View?) {
+                    override fun onViewDetachedFromWindow(v: View) {
                         (screenshotController as? DefaultScreenshotController)?.detach(v as ComposeView)
                     }
                 })

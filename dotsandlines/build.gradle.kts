@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    compileSdk = 32
+    compileSdk = 34
+    namespace = "com.halilibo.dotsandlines"
 
     defaultConfig {
         minSdk = 26
-        targetSdk = 32
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

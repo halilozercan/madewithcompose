@@ -60,23 +60,11 @@ class LightingTextDemoState(private val size: Size) {
 
   val lightSourceBrush by derivedStateOf {
     if (isLightOn) {
-      object : ShaderBrush() {
-        var lastBulbOffset: Offset? = null
-        var lastScrollOffset: Offset? = null
-        override fun createShader(size: Size): Shader {
-          lastBulbOffset = bulbOffset
-          lastScrollOffset = scrollOffset
-          return RadialGradientShader(
-            center = bulbOffset + scrollOffset,
-            radius = size.minDimension,
-            colors = listOf(Color.Yellow, Color(0xff85733a), Color.DarkGray)
-          )
-        }
-
-        override fun equals(other: Any?): Boolean {
-          return lastBulbOffset == bulbOffset && lastScrollOffset == scrollOffset
-        }
-      }
+      Brush.radialGradient(
+        center = bulbOffset + scrollOffset,
+        radius = size.minDimension,
+        colors = listOf(Color.Yellow, Color(0xff85733a), Color.DarkGray)
+      )
     } else {
       SolidColor(Color.DarkGray)
     }

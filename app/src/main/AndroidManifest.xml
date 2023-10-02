@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.halilibo.madewithcompose">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -16,13 +14,11 @@
         <activity
             android:name="com.halilibo.madewithcompose.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:supportsPictureInPicture="true"
             android:configChanges="colorMode|density|fontScale|keyboard|keyboardHidden|layoutDirection|locale|mcc|mnc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|touchscreen|uiMode"
             android:launchMode="singleTask"
             android:resizeableActivity="true"
-            android:theme="@style/Theme.MadeWithCompose.NoActionBar"
-            tools:targetApi="n">
+            android:theme="@style/Theme.MadeWithCompose.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

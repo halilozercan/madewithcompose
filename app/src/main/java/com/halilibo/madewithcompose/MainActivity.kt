@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -45,7 +46,7 @@ class MainActivity : ComponentActivity() {
                                 TopBar(navController = navController)
                             }
                         ) {
-                            Surface(modifier = Modifier.navigationBarsPadding()) {
+                            Surface(modifier = Modifier.padding(it).navigationBarsPadding()) {
                                 NavHost(navController = navController, startDestination = "home") {
                                     composable("home") {
                                         HomePage(navController)
@@ -71,7 +72,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onPictureInPictureModeChanged(
         isInPictureInPictureMode: Boolean,
-        newConfig: Configuration?
+        newConfig: Configuration
     ) {
         super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
         composePipController.pictureInPictureModeChanged(isInPictureInPictureMode)
