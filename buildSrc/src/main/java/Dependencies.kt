@@ -33,7 +33,7 @@ object BuildPlugins {
 }
 
 object RichText {
-    private const val version = "0.8.1"
+    private const val version = "0.16.0"
     const val material = "com.halilibo.compose-richtext:richtext-ui-material:$version"
     const val markdown = "com.halilibo.compose-richtext:richtext-commonmark:$version"
     const val printing = "com.halilibo.compose-richtext:printing:$version"

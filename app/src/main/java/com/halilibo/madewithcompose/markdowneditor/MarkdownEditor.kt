@@ -25,13 +25,13 @@ import androidx.compose.material.LocalContentColor
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Redo
+import androidx.compose.material.icons.automirrored.filled.Undo
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.FormatBold
 import androidx.compose.material.icons.filled.FormatItalic
 import androidx.compose.material.icons.filled.FormatQuote
 import androidx.compose.material.icons.filled.FormatStrikethrough
-import androidx.compose.material.icons.filled.Redo
-import androidx.compose.material.icons.filled.Undo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -68,7 +68,7 @@ fun MarkdownEditor(
         enabled = undoEnabled
       ) {
         Icon(
-          imageVector = Icons.Default.Undo,
+          imageVector = Icons.AutoMirrored.Filled.Undo,
           contentDescription = "Undo",
           tint = contentColor
         )
@@ -79,7 +79,7 @@ fun MarkdownEditor(
         enabled = redoEnabled
       ) {
         Icon(
-          imageVector = Icons.Default.Redo,
+          imageVector = Icons.AutoMirrored.Filled.Redo,
           contentDescription = "Redo",
           tint = contentColor
         )
