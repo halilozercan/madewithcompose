@@ -11,6 +11,7 @@ import com.halilibo.madewithcompose.videoplayer.VideoPlayerDemo
 import com.halilibo.madewithcompose.weightentry.WeightEntryDemo
 import com.halilibo.madewithcompose.markdowneditor.MarkdownEditorDemo
 import com.halilibo.madewithcompose.pip.PictureInPictureDemo
+import com.halilibo.madewithcompose.varimoji.VarimojiDemo
 
 enum class DemoEntry(
     val title: String,
@@ -85,6 +86,13 @@ enum class DemoEntry(
         "textonpath",
         @Composable {
             DrawTextOnPathDemo()
+        }
+    ),
+    Varimoji(
+        "Varimoji",
+        "varimoji",
+        @Composable {
+            VarimojiDemo()
         }
     )
 }

@@ -12,11 +12,15 @@ fun TextFieldBuffer.inlineWrap(
 ) {
   val initialSelection = selectionInChars
   replace(initialSelection.min, initialSelection.min, startWrappedString)
-  replace(initialSelection.max, initialSelection.max, endWrappedString)
+  replace(
+    initialSelection.max + startWrappedString.length,
+    initialSelection.max + startWrappedString.length,
+    endWrappedString
+  )
   selectCharsIn(
     TextRange(
-      initialSelection.min + startWrappedString.length,
-      initialSelection.max + startWrappedString.length
+      initialSelection.min,
+      initialSelection.max + startWrappedString.length + endWrappedString.length
     )
   )
 }

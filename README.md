@@ -42,3 +42,9 @@ Cool demos I've made with Compose that are somewhat worthy of sharing.
 # Drawing text on a Path
 
 [Making the waves with Jetpack Compose](https://twitter.com/halilozercan/status/1555736000910983169)
+
+# Variable Fonts
+
+[Variable fonts can be very awe-inspiring. Just by controlling two axes of Font loading via `FontVariation.Settings`, we can create an emoji face with a unique emotion.](https://twitter.com/halilozercan/status/1704607217708650793)
+
+All the credit goes to [crt-mate](https://crt-mate.github.io/varimoji/)

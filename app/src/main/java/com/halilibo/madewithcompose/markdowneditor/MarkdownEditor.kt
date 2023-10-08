@@ -37,6 +37,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -48,6 +49,7 @@ import com.halilibo.madewithcompose.R
 fun MarkdownEditor(
   state: TextFieldState,
   modifier: Modifier = Modifier,
+  enabled: Boolean = true,
   onUndo: () -> Unit = {},
   onRedo: () -> Unit = {},
   undoEnabled: Boolean = true,
@@ -157,10 +159,13 @@ fun MarkdownEditor(
     }
 
     val interactionSource = remember { MutableInteractionSource() }
+    val colors = TextFieldDefaults.outlinedTextFieldColors()
     BasicTextField2(
       state = state,
-      textStyle = LocalTextStyle.current.copy(fontSize = 20.sp),
+      textStyle = LocalTextStyle.current.copy(fontSize = 20.sp, color = LocalContentColor.current),
       interactionSource = interactionSource,
+      enabled = enabled,
+      cursorBrush = SolidColor(colors.cursorColor(false).value),
       decorationBox = {
         TextFieldDefaults.OutlinedTextFieldDecorationBox(
           value = state.text.toString(),

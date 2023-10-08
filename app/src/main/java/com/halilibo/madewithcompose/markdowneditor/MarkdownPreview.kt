@@ -54,6 +54,7 @@ import java.io.IOException
 @Composable
 fun MarkdownPreview(
   content: CharSequence,
+  modifier: Modifier = Modifier,
   onPreviewClick: () -> Unit
 ) {
   val context = LocalContext.current
@@ -61,7 +62,7 @@ fun MarkdownPreview(
   val screenshotController = remember { ScreenshotController() }
   val backgroundColor = MaterialTheme.colors.surface
 
-  Column {
+  Column(modifier) {
     Row(
       modifier = Modifier
         .fillMaxWidth()

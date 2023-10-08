@@ -68,6 +68,7 @@ fun MarkdownEditorDemo() {
         Card {
             MarkdownEditor(
                 state = state,
+                enabled = !bottomSheetScaffoldState.bottomSheetState.isExpanded,
                 onUndo = { state.undoState.undo() },
                 onRedo = { state.undoState.redo() },
                 undoEnabled = state.undoState.canUndo,
