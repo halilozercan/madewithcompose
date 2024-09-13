@@ -38,10 +38,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.FileProvider
-import com.halilibo.richtext.markdown.Markdown
+import com.halilibo.richtext.commonmark.Markdown
 import com.halilibo.richtext.ui.CodeBlockStyle
 import com.halilibo.richtext.ui.RichTextStyle
-import com.halilibo.richtext.ui.material.MaterialRichText
+import com.halilibo.richtext.ui.material.RichText
 import com.halilibo.screenshot.ScreenshotController
 import com.halilibo.screenshot.screenshot
 import kotlinx.coroutines.Dispatchers
@@ -89,7 +89,7 @@ fun MarkdownPreview(
         Modifier
           .weight(1f)
           .verticalScroll(rememberScrollState())) {
-        MaterialRichText(
+        RichText(
           style = RichTextStyle(codeBlockStyle = CodeBlockStyle(wordWrap = false)),
           modifier = Modifier
             .screenshot(screenshotController)

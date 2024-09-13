@@ -16,8 +16,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text2.BasicTextField2
-import androidx.compose.foundation.text2.input.TextFieldState
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -160,13 +160,13 @@ fun MarkdownEditor(
 
     val interactionSource = remember { MutableInteractionSource() }
     val colors = TextFieldDefaults.outlinedTextFieldColors()
-    BasicTextField2(
+    BasicTextField(
       state = state,
       textStyle = LocalTextStyle.current.copy(fontSize = 20.sp, color = LocalContentColor.current),
       interactionSource = interactionSource,
       enabled = enabled,
       cursorBrush = SolidColor(colors.cursorColor(false).value),
-      decorationBox = {
+      decorator = {
         TextFieldDefaults.OutlinedTextFieldDecorationBox(
           value = state.text.toString(),
           innerTextField = it,

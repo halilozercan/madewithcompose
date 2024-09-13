@@ -72,7 +72,7 @@ dependencies {
   implementation(project(":screenshot"))
   implementation(project(":colors"))
 
-  implementation("com.google.android.material:material:1.9.0")
+  implementation("com.google.android.material:material:1.12.0")
 
   implementation(Compose.ui)
   implementation(Compose.material)
@@ -83,12 +83,19 @@ dependencies {
   implementation(Compose.navigation)
   implementation(Compose.uiUtil)
 
+  implementation(Camera.camera2)
+  implementation(Camera.view)
+  implementation(Camera.video)
+  implementation(Camera.lifecycle)
+  implementation(Camera.extensions)
+  implementation(Camera.core)
+
+  implementation(Libraries.permissions)
   implementation(Libraries.coil)
   implementation(Libraries.media)
 
   implementation(RichText.material)
   implementation(RichText.markdown)
-  implementation(RichText.printing)
 
   implementation("com.google.code.gson:gson:2.9.1")
   implementation("androidx.lifecycle:lifecycle-common-java8:2.6.2")

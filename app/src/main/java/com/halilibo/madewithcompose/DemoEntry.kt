@@ -1,6 +1,7 @@
 package com.halilibo.madewithcompose
 
 import androidx.compose.runtime.Composable
+import com.halilibo.madewithcompose.asciicam.AsciiCamDemo
 import com.halilibo.madewithcompose.brush.BrushDemo
 import com.halilibo.madewithcompose.calendar.CalendarDemo
 import com.halilibo.madewithcompose.circlesonlines.CirclesOnLinesDemo
@@ -18,13 +19,20 @@ enum class DemoEntry(
     val destination: String,
     val composable: @Composable () -> Unit
 ) {
-    ScheduleCalendar(
-        "Schedule Calendar",
-        "schedulecalendar",
+    AsciiCamera(
+        "Ascii Camera",
+        "asciicamera",
         @Composable {
-            ScheduleCalendarDemo()
+            AsciiCamDemo()
         }
     ),
+//    ScheduleCalendar(
+//        "Schedule Calendar",
+//        "schedulecalendar",
+//        @Composable {
+//            ScheduleCalendarDemo()
+//        }
+//    ),
     VideoPlayer(
         "Video Player",
         "videoplayer",
